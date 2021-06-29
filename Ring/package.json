@@ -10,5 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^7.29.0"
+  },
+  "dependencies": {
+    "websocket": "^1.0.34"
   }
 }
