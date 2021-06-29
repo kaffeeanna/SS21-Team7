@@ -1,0 +1,14 @@
+{
+  "name": "case",
+  "version": "1.0.0",
+  "description": "case component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yogspace",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.29.0"
+  }
+}
