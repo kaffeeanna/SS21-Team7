@@ -30,5 +30,5 @@ client.on('connect', function(connection) {
     }
     sendNumber();
 });
-
-client.connect('ws://localhost:8080/', 'echo-protocol');
+//IP von Max 192.168.178.20 bzw. vom Server!!!
+client.connect('ws://192.168.178.20:8080/', 'echo-protocol');
