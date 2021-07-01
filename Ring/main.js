@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-var WebSocketClient = require('websocket').client;
+const { getTraining, sendTraining } = require("./src/js/training")
+const WebSocketClient = require("websocket").client;
 
-var client = new WebSocketClient();
+const client = new WebSocketClient();
 
 client.on('connectFailed', function(error) {
     console.log('Connect Error: ' + error.toString());
@@ -16,9 +17,10 @@ client.on('connect', function(connection) {
         console.log('echo-protocol Connection Closed');
     });
     connection.on('message', function(message) {
-        if (message.type === 'utf8') {
-            console.log("Received: '" + message.utf8Data + "'");
-        }
+        console.log(message.utf8Data);
+        // if (message.type === 'utf8') {
+        //     console.log("Received: '" + message.utf8Data + "'");
+        // }
     });
     
     function sendNumber() {
