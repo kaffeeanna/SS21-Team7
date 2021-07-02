@@ -4,7 +4,12 @@
  */
 const WebSocketServer = require('websocket').server;
 const http = require('http');
-const { getTrainingFromList, sendTraining, changeTraining, createNewTraining, getTrainingList } = require("./src/js/training");
+const EventEmitter = require('events');
+const express = require("express");
+const { getTrainingFromList, sendTraining, deleteTraining, saveTrainingList, createNewTraining, getTrainingList, resetTrainingList } = require("./src/js/training");
+const myEmitter = new EventEmitter();
+const app = express();
+const path = require("path");
 let trainingList = [];
 
 /**
@@ -51,8 +56,13 @@ wsServer.on('request', function(request) {
     //         /**
     //         * Send the message back || the 0 in trainingList is for the specific training what will be send to the ring
     //         */
-    //         sendObj = JSON.stringify(trainingList[0]);
-    //         connection.send(sendObj);
+    //sends Data
+        myEmitter.on('sendData', (data) => {
+            sendObj = JSON.stringify(data);
+            connection.send(sendObj);
+        } );
+
+
     //     }
     //     else {
     //         console.log("message is in wrong format")
@@ -63,7 +73,7 @@ wsServer.on('request', function(request) {
     //     // }
     // });
     connection.on('message', function(message) {
-        getData(message);
+        // getData(message);
     });
 
     // If connection is closed
@@ -77,17 +87,31 @@ wsServer.on('request', function(request) {
  */
 async function logic(){
         //get the trainingList
-        const list = await getTrainingList();
-        trainingList = list;
-        console.log(list);
+        let list = await getTrainingList();
+        let fakeObj = {
+            id: list.trainingList.length,
+            name: "test",
+            objectList: []
+          };
         //here you get the list with all trainings
+        sendTraining(myEmitter, list, "presidents");
+
+        // getTrainingFromList(list, 0).then((training) => { let newList = resolve(deleteTraining(list, training); console.log(newList);});
+        //trainingList looks like: [{training1}, {training2}]
+        //getTrainingList(list) | gives you the trainingList | WORKS
+        //getTrainingFromList(list, id/name) | gives you the specific training from the trainingList by name | WORKS
+        //sendTraining(myEmitter, list, id or name as a string) | sends the Training with the given id to the ring | WORKS
+        //createNewTraining(training) | creates a new Training, pushes it into the trainingList and returns the new List | WORKS
+        //saveTrainingList(list) | saves the trainingList after creating a new Training | returns the new List | WORKS
+        //resetTrainingList() | resets the trainingList and all data that was saved before | WORKS
+        //deleteTraining(list, id/name) | deletes the training with the given id or name from the list
+
         //do stuff
+
+        //BUG when you added a new training, you have to wait a moment before you can send it to the ring!!
 }
 
 logic();
-
-
-
 
 
 function originIsAllowed(origin) {
@@ -95,16 +119,20 @@ function originIsAllowed(origin) {
   return true;
 }
 
-function send(data){
-    //send: training, get-request
-    let objData = JSON.stringify(data)
-    connection.send(objData);
-}
+app.use(express.urlencoded({ extended: false}));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname,"views"));
+  
+//post, get, all
+app.all("/",(req, res) => {
+    res.render("index")
+});
 
-function getData(message){
-    if (message.type === 'utf8') {
-        console.log('Received Message: ' + message.utf8Data);
-    }
-}
+app.all("/new-training",(req,res) => {
+    res.render("new-training");
+});
 
 
+  
+  app.listen(3001);
+  console.log("listening on http://localhost:3001");

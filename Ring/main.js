@@ -1,6 +1,13 @@
 #!/usr/bin/env node
-const { getTraining, sendTraining } = require("./src/js/training")
+const { getData } = require("./src/js/training");
 const WebSocketClient = require("websocket").client;
+const EventEmitter = require('events');
+const myEmitter = new EventEmitter();
+
+let training;
+myEmitter.on('getData', (data) => {
+    getData(data);
+} );
 
 const client = new WebSocketClient();
 
@@ -17,7 +24,8 @@ client.on('connect', function(connection) {
         console.log('echo-protocol Connection Closed');
     });
     connection.on('message', function(message) {
-        console.log(message.utf8Data);
+        // console.log(message.utf8Data);
+        myEmitter.emit('getData', message.utf8Data);
         // if (message.type === 'utf8') {
         //     console.log("Received: '" + message.utf8Data + "'");
         // }

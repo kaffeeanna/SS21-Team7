@@ -1,12 +1,11 @@
-function getTraining() {
-    console.log("getTraining")
-}
+const fs = require("fs");
 
-function sendTraining() {
-    console.log("sendTraining")
+function getData(data){
+    let training;
+    let d = JSON.parse(data);
+    console.log(d);
 }
 
 module.exports = {
-getTraining,
-sendTraining
+    getData
 }
