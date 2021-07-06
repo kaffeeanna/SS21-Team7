@@ -76,11 +76,7 @@ async function createNewTraining(training) {
 }
 //savetraining
 async function saveTrainingList(list){
-    return new Promise(resolve => {
-    // if (typeof list === 'object' && list !== null
-    // ){
-    //     console.log("GOOD");
-
+    return new Promise(resolve => { 
     let data = JSON.stringify(list, null, 2);
     // console.log(data);
     fs.writeFile('./src/trainingList/trainingList.json', data, (err) => {
@@ -90,14 +86,7 @@ async function saveTrainingList(list){
             console.log('Data written to file');
         }
         resolve("saved.");
-    //         resolve(data);
-    //     }
     });
-    // }
-        // else {
-        //     console.log("BAD");
-        //     resolve({});
-        // }
     }),(reject => {
         console.log("something went wrong while saving the list: " + reject)
     });
@@ -113,7 +102,6 @@ function getTrainingList() {
             }
             else {
                 resolve(JSON.parse(data))
-            // return data.toString();
             }
         })
     }, (reject) => {
@@ -139,12 +127,8 @@ function resetTrainingList(){
             } else {
                 console.log('Data written to file');
             }
-        //         resolve(data);
-        //     }
         });
     });
-    //         resolve(data);
-    //     }
 }
 
 module.exports = {

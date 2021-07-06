@@ -60,6 +60,7 @@ wsServer.on('request', function(request) {
         myEmitter.on('sendData', (data) => {
             sendObj = JSON.stringify(data);
             connection.send(sendObj);
+            console.log("send");
         } );
 
 
@@ -74,6 +75,7 @@ wsServer.on('request', function(request) {
     // });
     connection.on('message', function(message) {
         // getData(message);
+        console.log(message);
     });
 
     // If connection is closed
@@ -85,16 +87,7 @@ wsServer.on('request', function(request) {
 /**
  * Logic of case
  */
-async function logic(){
-        //get the trainingList
-        let list = await getTrainingList();
-        let fakeObj = {
-            id: list.trainingList.length,
-            name: "test",
-            objectList: []
-          };
-        //here you get the list with all trainings
-        sendTraining(myEmitter, list, "presidents");
+
 
         // getTrainingFromList(list, 0).then((training) => { let newList = resolve(deleteTraining(list, training); console.log(newList);});
         //trainingList looks like: [{training1}, {training2}]
@@ -109,9 +102,6 @@ async function logic(){
         //do stuff
 
         //BUG when you added a new training, you have to wait a moment before you can send it to the ring!!
-}
-
-// logic();
 
 
 function originIsAllowed(origin) {
@@ -136,7 +126,6 @@ app.all("/trainings", async (req, res) => {
     },(err)=> {
         console.log(err);
     });
-    // console.log(req.body);
 });
 
 
@@ -165,8 +154,19 @@ for (let i = 0; i < list.trainingList.length; i++){
 app.all("/trainings/:name/send", async (req, res) =>{
     let list = await getTrainingList();
     let name = req.params.name;
-    // res.redirect("/trainings");
-    res.send("send " + name);
+    let status;
+    let training;
+    // res.send("delete " + name);
+    for (let i = 0; i < list.trainingList.length; i++){
+        if (list.trainingList[i].name === name){
+            status = true;
+            training = list.trainingList[i];
+        }
+    }
+    if (status === true){
+        sendTraining(myEmitter, list, training.id);
+        }
+        res.redirect("/trainings");
 });
 
 app.all("/trainings/:name/delete", async (req, res) =>{
@@ -174,7 +174,7 @@ app.all("/trainings/:name/delete", async (req, res) =>{
     let status;
     let training;
     let name = req.params.name;
-    res.send("delete " + name);
+    // res.send("delete " + name);
     for (let i = 0; i < list.trainingList.length; i++){
         if (list.trainingList[i].name === name){
             status = true;
@@ -183,15 +183,10 @@ app.all("/trainings/:name/delete", async (req, res) =>{
     }
     //if there is a training with the specific name
     if (status === true){
-    console.log("deleted");
-    // console.log("old list: " + list.trainingList);
-    deleteTraining(list, training.id);
-    // console.log("new list: " + list.trainingList);
-    list = await getTrainingList();
-    console.log(list);
+    console.log("deleted " + training.name);
+    deleteTraining(list, training).then((list)=>{saveTrainingList(list);},((err)=>{console.log("there was an error " + err);}));
     }
-    // res.redirect("/trainings");
-
+    res.redirect("/trainings");
 });
 
 app.post("/trainings/new/myNewTraining", async (req, res) => {
@@ -204,9 +199,7 @@ app.post("/trainings/new/myNewTraining", async (req, res) => {
       };
     res.json(newTraining);
     // sendTraining(myEmitter, list, list.trainingList.length);
-    createNewTraining(newTraining).then((list)=>{saveTrainingList(list);},((err)=>{console.log("there was an error "+err)}));
-    // res.send(training);
-    //CODE WHEN A TRAINING WILL BE SENDED TO THE RING
+    createNewTraining(newTraining).then((list)=>{saveTrainingList(list);},((err)=>{console.log("there was an error "+err);}));
 });
 
 // resetTrainingList();

@@ -6,6 +6,13 @@
     </head>
     <body>
         <h1><%=training.name%></h1>
+        <%console.log(training);%>
+        <%for (let i = 0; i < training.objectList.length; i++){%>
+        <p><%=training.objectList[i].informationToRemember%></p>
+        <p><%=training.objectList[i].randomWord%></p>
+        </br>
+        <%}%>
+
         <div class="container">
             <a href="/trainings" method="POST" class="button">zurück</a>
             <a href="/trainings/<%=training.name%>/send" method="POST" class="button">starten</a>

@@ -5,9 +5,9 @@ const EventEmitter = require('events');
 const myEmitter = new EventEmitter();
 
 let training;
-myEmitter.on('getData', (data) => {
-    getData(data);
-} );
+// myEmitter.on('getData', (data) => {
+//     getData(data);
+// } );
 
 const client = new WebSocketClient();
 
@@ -24,11 +24,9 @@ client.on('connect', function(connection) {
         console.log('echo-protocol Connection Closed');
     });
     connection.on('message', function(message) {
-        // console.log(message.utf8Data);
-        myEmitter.emit('getData', message.utf8Data);
-        // if (message.type === 'utf8') {
-        //     console.log("Received: '" + message.utf8Data + "'");
-        // }
+        if (message.type === 'utf8') {
+            console.log("Received: '" + message.utf8Data + "'");
+        }
     });
     
     function sendNumber() {
@@ -38,7 +36,8 @@ client.on('connect', function(connection) {
             setTimeout(sendNumber, 1000);
         }
     }
-    sendNumber();
+    // sendNumber();
 });
 //IP von Max 192.168.178.20 bzw. vom Server!!!
-client.connect('ws://192.168.178.20:8080/', 'echo-protocol');
+
+client.connect('ws://10.110.0.103:8080/', 'echo-protocol');
