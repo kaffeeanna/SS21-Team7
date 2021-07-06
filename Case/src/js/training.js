@@ -26,36 +26,40 @@ async function getTrainingFromList(list, identification) {
         }
     });
 }
-async function sendTraining(emitter, list, identification) {
+async function sendTraining(emitter, list, msg, identification) {
     //creates an interval that emits the training every second to the websocket, so the ws can send it to the ring
     //interval should be removed in final version
     // console.log(list.trainingList[0].name);
     //if id is not a Number, it must be the name
-    let data;
-    if (isNaN(identification)){
-        for (let i = 0; i < list.trainingList.length; i++){
-            if (list.trainingList[i].name === identification){
-                console.log("this is the training which will be sended: " + list.trainingList[i].name);
-                data = list.trainingList[i];
+    let data = {
+        msg: msg,
+        data: null
+    };
+        if (isNaN(identification)){
+            for (let i = 0; i < list.trainingList.length; i++){
+                if (list.trainingList[i].name === identification){
+                    console.log("this is the training which will be sended: " + list.trainingList[i].name);
+                    data.data = list.trainingList[i];
+                }
             }
         }
-    }
-    else {
-        for (let i = 0; i < list.trainingList.length; i++){
-            if (list.trainingList[i].id === identification){
-                console.log("this is the training which will be sended: " + list.trainingList[i].name);
-                data = list.trainingList[i];
+        else {
+            for (let i = 0; i < list.trainingList.length; i++){
+                if (list.trainingList[i].id === identification){
+                    console.log("this is the training which will be sended: " + list.trainingList[i].name);
+                    data.data = list.trainingList[i];
+                }
             }
         }
-    }
-    if (!data){
+    if (!data.data){
         console.log("Identification is incorrect. Nothing will be sended.")
-        data = "nothing";
+        data.data = "nothing";
     }
-    let d = setInterval(()=>{
+    // console.log("halloooo" + data.msg);
+    // let d = setInterval(()=>{
         emitter.emit('sendData', data);
         // console.log("emitted");
-    }, 1000);
+    // }, 1000);
 }
 async function deleteTraining(list, training) {
         // console.log(list.trainingList);
