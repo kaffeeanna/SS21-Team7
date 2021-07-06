@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Case</title>
+        <link rel="stylesheet" href="/style.css"/>
+    </head>
+    <body>
+        <h1><%=training.name%></h1>
+        <div class="container">
+            <a href="/trainings" method="POST" class="button">zurück</a>
+            <a href="/trainings/<%=training.name%>/send" method="POST" class="button">starten</a>
+            <a href="/trainings/<%=training.name%>/delete" method="POST" class="button">löschen</a>
+        </div>
+    </body>
+</html>

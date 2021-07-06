@@ -1,0 +1,19 @@
+.container {
+    display: grid;
+    /*align-items:center;
+    justify-content: center;
+    height: 90vh;
+    width: 100vw; */
+}
+a {
+    height: 100px;
+    padding: 10px;
+    border-style: solid;
+    text-decoration: none;
+    color: black;
+    margin-top: 10px;
+    font-size: 20pt;
+}
+a:hover {
+    color: blue;
+}

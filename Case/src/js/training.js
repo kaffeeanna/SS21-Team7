@@ -64,7 +64,7 @@ async function deleteTraining(list, training) {
                 list.trainingList.splice(i,1);
             }
         }
-        return list.trainingList
+        return list
 }
 async function createNewTraining(training) {
     //get the trainingList
@@ -82,7 +82,6 @@ async function saveTrainingList(list){
     //     console.log("GOOD");
 
     let data = JSON.stringify(list, null, 2);
-    console.log(data);
     // console.log(data);
     fs.writeFile('./src/trainingList/trainingList.json', data, (err) => {
         if (err) {

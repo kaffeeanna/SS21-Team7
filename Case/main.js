@@ -111,7 +111,7 @@ async function logic(){
         //BUG when you added a new training, you have to wait a moment before you can send it to the ring!!
 }
 
-logic();
+// logic();
 
 
 function originIsAllowed(origin) {
@@ -120,6 +120,7 @@ function originIsAllowed(origin) {
 }
 
 app.use(express.urlencoded({ extended: false}));
+app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname,"views"));
   
@@ -128,11 +129,89 @@ app.all("/",(req, res) => {
     res.render("index")
 });
 
-app.all("/new-training",(req,res) => {
-    res.render("new-training");
+
+app.all("/trainings", async (req, res) => {
+    let list = await getTrainingList().then((list)=>{
+        res.render("trainings", {list});
+    },(err)=> {
+        console.log(err);
+    });
+    // console.log(req.body);
 });
 
 
-  
-  app.listen(3001);
-  console.log("listening on http://localhost:3001");
+app.all("/trainings/new", (req, res) => {      
+    res.render("new-training");
+});
+
+app.all("/trainings/:name", async (req, res) =>{
+let list = await getTrainingList();
+let status;
+let name = req.params.name
+for (let i = 0; i < list.trainingList.length; i++){
+    if (list.trainingList[i].name === name){
+        let training = list.trainingList[i];
+        status = true;
+        res.render("training",{list, training});
+    }
+}
+    if (status === true){
+        return
+    }
+    else {
+        res.redirect("/trainings");
+    }
+});
+app.all("/trainings/:name/send", async (req, res) =>{
+    let list = await getTrainingList();
+    let name = req.params.name;
+    // res.redirect("/trainings");
+    res.send("send " + name);
+});
+
+app.all("/trainings/:name/delete", async (req, res) =>{
+    let list = await getTrainingList();
+    let status;
+    let training;
+    let name = req.params.name;
+    res.send("delete " + name);
+    for (let i = 0; i < list.trainingList.length; i++){
+        if (list.trainingList[i].name === name){
+            status = true;
+            training = list.trainingList[i];
+        }
+    }
+    //if there is a training with the specific name
+    if (status === true){
+    console.log("deleted");
+    // console.log("old list: " + list.trainingList);
+    deleteTraining(list, training.id);
+    // console.log("new list: " + list.trainingList);
+    list = await getTrainingList();
+    console.log(list);
+    }
+    // res.redirect("/trainings");
+
+});
+
+app.post("/trainings/new/myNewTraining", async (req, res) => {
+    let list = await getTrainingList();
+    let trainingName = req.body.trainingName;  
+    let newTraining = {
+        id: list.trainingList.length,
+        name: trainingName,
+        objectList: []
+      };
+    res.json(newTraining);
+    // sendTraining(myEmitter, list, list.trainingList.length);
+    createNewTraining(newTraining).then((list)=>{saveTrainingList(list);},((err)=>{console.log("there was an error "+err)}));
+    // res.send(training);
+    //CODE WHEN A TRAINING WILL BE SENDED TO THE RING
+});
+
+// resetTrainingList();
+
+
+
+app.listen(3001);
+console.log("listening on http://localhost:3001");

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Case</title>
+        <link rel="stylesheet" href="/style.css"/>
+    </head>
+    <body>
+        <h1>Meine Trainings</h1>
+        <div class="container">
+            <a href="/" method="POST" class="button">zurück</a>
+            <!-- <a href="/tutorial" method="POST" class="button">Tutorial</a> -->
+            <!-- <a href="/help" method="POST" class="button">Hilfe</a> -->
+            <!-- <%console.log(list);%> -->
+            <% for (let i = 0; i < list.trainingList.length; i++){ %>
+            <a href='/trainings/<%=list.trainingList[i].name%>' method="POST" class="button"><%= list.trainingList[i].name %></a>
+           <% } %>
+            <a href="/trainings/new" method="POST" class="button">neues Training erstellen</a>
+        </div>
+    </body>
+</html>

@@ -2,18 +2,14 @@
 <html>
     <head>
         <title>Case</title>
-        <style>
-            .button {
-                width: 40vw;
-                height: 10vh;
-            }
-        </style>
+        <link rel="stylesheet" href="/style.css"/>
     </head>
     <body>
         <h1>Hilfe</h1>
-    <form action="/new-training" method="POST"><button class="home-button"style="width: 40vw; height: 22vh">Neues Training</button></form>
-    <form action="/try-again" method="POST"><button class="home-button"style="width: 40vw; height: 22vh">Wiederholen</button></form>
-    <form action="/tutorial" method="POST"><button class="home-button"style="width: 40vw; height: 22vh">Tutorial</button></form>
-    <form action="/help" method="POST"><button class="home-button"style="width: 40vw; height: 22vh">Hilfe</button></form>
+        <div class="container">
+            <a href="/trainings" method="POST" class="button">Meine Trainings</a>
+            <a href="/tutorial" method="POST" class="button">Tutorial</a>
+            <a href="/help" method="POST" class="button">Hilfe</a>
+        </div>
     </body>
 </html>

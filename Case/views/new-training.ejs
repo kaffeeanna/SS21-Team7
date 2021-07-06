@@ -2,18 +2,17 @@
 <html>
     <head>
         <title>Case</title>
-        <style>
-            .button {
-                width: 40vw;
-                height: 10vh;
-            }
-        </style>
+        <link rel="stylesheet" href="/style.css"/>
     </head>
     <body>
-        <h1>Neues Training</h1>
-    <form action="/new-training" method="POST"><button class="home-button"style="width: 40vw; height: 22vh">Neues Training</button></form>
-    <form action="/try-again" method="POST"><button class="home-button"style="width: 40vw; height: 22vh">Wiederholen</button></form>
-    <form action="/tutorial" method="POST"><button class="home-button"style="width: 40vw; height: 22vh">Tutorial</button></form>
-    <form action="/help" method="POST"><button class="home-button"style="width: 40vw; height: 22vh">Hilfe</button></form>
+        <h1>Meine Trainings</h1>
+        <div class="container">
+            <a href="/trainings/" method="POST" class="button">zurück</a>
+            <form action="/trainings/new/myNewTraining" method="POST">
+                <!-- minLength is the minimum number of chars a training can have -->
+                <input type="text" minlength="5" name="trainingName">
+                <button >Go</button>
+            </form>
+        </div>
     </body>
 </html>
