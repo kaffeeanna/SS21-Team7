@@ -4,10 +4,11 @@ const WebSocketClient = require("websocket").client;
 const EventEmitter = require('events');
 const myEmitter = new EventEmitter();
 
-let training;
-// myEmitter.on('getData', (data) => {
-//     getData(data);
-// } );
+//IP vom Server!!! windows ipconfig
+//lab: 10.110.0.103
+//max: 192.168.178.20
+const ip = "10.110.0.103";
+
 
 const client = new WebSocketClient();
 
@@ -38,6 +39,6 @@ client.on('connect', function(connection) {
     }
     // sendNumber();
 });
-//IP von Max 192.168.178.20 bzw. vom Server!!!
 
-client.connect('ws://10.110.0.103:8080/', 'echo-protocol');
+client.connect('ws://' + ip + ':8080/', 'echo-protocol');
+console.log("client listening on " + ip);

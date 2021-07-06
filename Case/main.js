@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Imports and requirements
  */
@@ -47,15 +46,6 @@ wsServer.on('request', function(request) {
     let connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
 
-
-    // If a message comes in
-    // connection.on('message', function(message) {
-    //     getData(message);
-    //     if (message.type === 'utf8') {
-    //         console.log('Received Message: ' + message.utf8Data);
-    //         /**
-    //         * Send the message back || the 0 in trainingList is for the specific training what will be send to the ring
-    //         */
     //sends Data
         myEmitter.on('sendData', (data) => {
             sendObj = JSON.stringify(data);
@@ -63,16 +53,6 @@ wsServer.on('request', function(request) {
             console.log("send");
         } );
 
-
-    //     }
-    //     else {
-    //         console.log("message is in wrong format")
-    //     }
-    //     // else if (message.type === 'binary') {
-    //     //     console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
-    //     //     connection.sendBytes(message.binaryData);
-    //     // }
-    // });
     connection.on('message', function(message) {
         // getData(message);
         console.log(message);
@@ -83,12 +63,6 @@ wsServer.on('request', function(request) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 });
-
-/**
- * Logic of case
- */
-
-
         // getTrainingFromList(list, 0).then((training) => { let newList = resolve(deleteTraining(list, training); console.log(newList);});
         //trainingList looks like: [{training1}, {training2}]
         //getTrainingList(list) | gives you the trainingList | WORKS
