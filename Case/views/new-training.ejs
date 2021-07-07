@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Case</title>
-        <link rel="stylesheet" href="/style.css"/>
-    </head>
-    <body>
-        <h1>Meine Trainings</h1>
-        <div class="container">
-            <a href="/trainings/" method="POST" class="button">zurück</a>
-            <form action="/trainings/new/myNewTraining" method="POST">
-                <!-- minLength is the minimum number of chars a training can have -->
-                <input type="text" minlength="5" name="trainingName">
-                <button >Go</button>
-            </form>
-        </div>
-    </body>
+  <head>
+    <title>Case</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <h1>Meine Trainings</h1>
+    <div class="container">
+      <form action="/trainings/new/myNewTraining" method="POST">
+        <!-- minLength is the minimum number of chars a training can have -->
+        <input type="text" minlength="5" name="trainingName" />
+        <button>Erstellen</button>
+      </form>
+      <a href="/trainings/" method="POST" class="button">zurück</a>
+    </div>
+  </body>
 </html>
