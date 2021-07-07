@@ -27,9 +27,6 @@ async function getTrainingFromList(list, identification) {
     });
 }
 async function sendTraining(emitter, list, msg, identification) {
-    //creates an interval that emits the training every second to the websocket, so the ws can send it to the ring
-    //interval should be removed in final version
-    // console.log(list.trainingList[0].name);
     //if id is not a Number, it must be the name
     let data = {
         msg: msg,

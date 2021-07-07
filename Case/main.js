@@ -1,6 +1,3 @@
-/**
- * Imports and requirements
- */
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 const EventEmitter = require('events');
@@ -9,7 +6,18 @@ const { getTrainingFromList, sendTraining, deleteTraining, saveTrainingList, cre
 const myEmitter = new EventEmitter();
 const app = express();
 const path = require("path");
-let trainingList = [];
+// let trainingList = [];
+
+        //trainingList looks like: [{training1}, {training2}]
+        //getTrainingList(list) | gives you the trainingList | WORKS
+        //getTrainingFromList(list, id/name) | gives you the specific training from the trainingList by name | WORKS
+        //sendTraining(myEmitter, list, msg, id or name as a string) | sends the Training with the given id to the ring | msg="start" -> start the training, msg="get" aborts training| WORKS
+        //createNewTraining(training) | creates a new Training, pushes it into the trainingList and returns the new List | WORKS
+        //saveTrainingList(list) | saves the trainingList after creating a new Training | returns the new List | WORKS
+        //resetTrainingList() | resets the trainingList and all data that was saved before | WORKS
+        //deleteTraining(list, id/name) | deletes the training with the given id or name from the list
+        //do stuff
+        // next steps: do ring stuff, added sound input and output
 
 /**
  * Server initialised
@@ -64,19 +72,6 @@ wsServer.on('request', function(request) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 });
-        // getTrainingFromList(list, 0).then((training) => { let newList = resolve(deleteTraining(list, training); console.log(newList);});
-        //trainingList looks like: [{training1}, {training2}]
-        //getTrainingList(list) | gives you the trainingList | WORKS
-        //getTrainingFromList(list, id/name) | gives you the specific training from the trainingList by name | WORKS
-        //sendTraining(myEmitter, list, msg, id or name as a string) | sends the Training with the given id to the ring | msg="start" -> start the training, msg="get" aborts training| WORKS
-        //createNewTraining(training) | creates a new Training, pushes it into the trainingList and returns the new List | WORKS
-        //saveTrainingList(list) | saves the trainingList after creating a new Training | returns the new List | WORKS
-        //resetTrainingList() | resets the trainingList and all data that was saved before | WORKS
-        //deleteTraining(list, id/name) | deletes the training with the given id or name from the list
-        //do stuff
-
-        //BUG when you added a new training, you have to wait a moment before you can send it to the ring!!
-
 
 function originIsAllowed(origin) {
   // put logic here to detect whether the specified origin is allowed.
