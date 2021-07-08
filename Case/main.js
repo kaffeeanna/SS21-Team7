@@ -101,6 +101,13 @@ app.all("/trainings/new", (req, res) => {
     res.render("new-training");
 });
 
+app.all("/help", (req, res) => {      
+    res.render("help");
+});
+app.all("/tutorial", (req, res) => {      
+    res.render("tutorial");
+});
+
 app.all("/trainings/:name", async (req, res) =>{
 let list = await getTrainingList();
 let status;
@@ -134,10 +141,26 @@ app.all("/trainings/:name/send", async (req, res) =>{
     if (status === true){
         sendTraining(myEmitter, list, "send", training.id);
         }
-        res.redirect("/trainings");
+        res.render("send", {list, training});
 });
 
-
+app.all("/trainings/:name/send/back", async (req, res) =>{
+    let list = await getTrainingList();
+    let name = req.params.name;
+    let status;
+    let training;
+    // res.send("delete " + name);
+    for (let i = 0; i < list.trainingList.length; i++){
+        if (list.trainingList[i].name === name){
+            status = true;
+            training = list.trainingList[i];
+        }
+    }
+    if (status === true){
+        sendTraining(myEmitter, list, "get", training.id);
+        }
+        res.redirect("/trainings");
+});
 
 app.all("/trainings/:name/delete", async (req, res) =>{
     let list = await getTrainingList();
@@ -159,24 +182,26 @@ app.all("/trainings/:name/delete", async (req, res) =>{
     res.redirect("/trainings");
 });
 
-app.post("/trainings/new/myNewTraining", async (req, res) => {
+app.post("/trainings/new/myNewTraining", async (req, res, next) => {
     let list = await getTrainingList();
     let trainingName = req.body.trainingName;  
-    let newTraining = {
+    let training = {
         id: list.trainingList.length,
         name: trainingName,
         objectList: []
       };
     // res.json(newTraining);
-    createNewTraining(newTraining).then((list) => {
-        saveTrainingList(list);
+    createNewTraining(training).then((list) => {
+        saveTrainingList(list).then((list) => {
+        });
     },
-    ((err) => {
-        console.log("there was an error "+err);
-    }))
-    res.redirect("/trainings/:name");
+    (err) => {
+        console.log("there was an error "+ err);
+    });
+    res.redirect("/trainings");
 });
 
+resetTrainingList();
 // resetTrainingList();
 
 app.listen(3001);

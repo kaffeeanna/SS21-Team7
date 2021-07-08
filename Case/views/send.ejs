@@ -5,9 +5,9 @@
         <link rel="stylesheet" href="/style.css"/>
     </head>
     <body>
-        <h1>Tutorials</h1>
+        <h1><%=training.name%></h1>
         <div class="container">
-            <a href="/trainings" method="POST" class="button">zurück</a>
+            <a href="/trainings/<%=training.name%>/send/back" method="POST" class="button">beenden</a>
         </div>
     </body>
 </html>
