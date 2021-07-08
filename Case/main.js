@@ -201,7 +201,6 @@ app.post("/trainings/new/myNewTraining", async (req, res, next) => {
     res.redirect("/trainings");
 });
 
-resetTrainingList();
 // resetTrainingList();
 
 app.listen(3001);

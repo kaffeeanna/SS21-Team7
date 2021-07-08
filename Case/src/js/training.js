@@ -35,7 +35,7 @@ async function sendTraining(emitter, list, msg, identification) {
         if (isNaN(identification)){
             for (let i = 0; i < list.trainingList.length; i++){
                 if (list.trainingList[i].name === identification){
-                    console.log("this is the training which will be sended: " + list.trainingList[i].name);
+                    console.log("this is the training which will be transmitted: " + list.trainingList[i].name);
                     data.data = list.trainingList[i];
                 }
             }
@@ -43,7 +43,7 @@ async function sendTraining(emitter, list, msg, identification) {
         else {
             for (let i = 0; i < list.trainingList.length; i++){
                 if (list.trainingList[i].id === identification){
-                    console.log("this is the training which will be sended: " + list.trainingList[i].name);
+                    console.log("this is the training which will be transmitted: " + list.trainingList[i].name);
                     data.data = list.trainingList[i];
                 }
             }
@@ -84,7 +84,7 @@ async function saveTrainingList(list){
         if (err) {
             console.log("there was an error while saving the List: " + err);
         } else {
-            console.log('Data written to file');
+            console.log('Data saved');
         }
         resolve("saved.");
     });
@@ -126,7 +126,7 @@ function resetTrainingList(){
             if (err) {
                 console.log("there was an error while saving the List: " + err);
             } else {
-                console.log('Data written to file');
+                console.log('List resetted');
             }
         });
     });
