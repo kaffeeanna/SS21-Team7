@@ -55,12 +55,13 @@ wsServer.on('request', function(request) {
     let connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
     clientConnected = true;
-    // console.log(clientConnected);
+    console.log(clientConnected);
 
     //sends Data
         myEmitter.on('sendData', (data) => {
             sendObj = JSON.stringify(data);
-            // console.log(sendObj);
+            console.log(sendObj);
+            connection.sendUTF(sendObj);
         } );
 
     connection.on('message', function(message) {
@@ -72,7 +73,7 @@ wsServer.on('request', function(request) {
      connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
         clientConnected = false;
-        // console.log(clientConnected);
+        console.log(clientConnected);
     });
 });
 
