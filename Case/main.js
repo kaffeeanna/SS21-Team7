@@ -55,12 +55,12 @@ wsServer.on('request', function(request) {
     let connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
     clientConnected = true;
-    console.log(clientConnected);
+    // console.log(clientConnected);
 
     //sends Data
         myEmitter.on('sendData', (data) => {
             sendObj = JSON.stringify(data);
-            console.log(sendObj);
+            // console.log(sendObj);
             connection.sendUTF(sendObj);
         } );
 
@@ -73,7 +73,7 @@ wsServer.on('request', function(request) {
      connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
         clientConnected = false;
-        console.log(clientConnected);
+        // console.log(clientConnected);
     });
 });
 
@@ -146,7 +146,7 @@ app.all("/trainings/:name/send", async (req, res) =>{
         sendTraining(myEmitter, list, "send", training.id);
         }
         if (clientConnected === true){
-        res.render("send", {list, training});
+        res.render("send", {list, training, clientConnected});
         } else {
             res.redirect("/trainings");
             console.log("Ring is not connected.");
@@ -175,7 +175,7 @@ app.all("/trainings/:name/send/back", async (req, res) =>{
             console.log("Ring is not connected.");
             // console.log(req.get("referer"))
             // res.redirect(req.originalUrl, {name})
-            res.render("send", {list, training});
+            res.render("send", {list, training, clientConnected});
         }
 });
 

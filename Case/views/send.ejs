@@ -8,6 +8,9 @@
         <h1><%=training.name%></h1>
         <div class="container">
             <a href="/trainings/<%=training.name%>/send/back" method="POST" class="button">beenden</a>
+            <%if (clientConnected === false) { %>
+            <p>Du bist nicht mit dem Ring verbunden.</p>
+            <%};%>
         </div>
     </body>
 </html>
