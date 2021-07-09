@@ -2,7 +2,7 @@ const WebSocketServer = require('websocket').server;
 const http = require('http');
 const EventEmitter = require('events');
 const express = require("express");
-const { getTrainingFromList, sendTraining, deleteTraining, saveTrainingList, createNewTraining, getTrainingList, resetTrainingList } = require("./src/js/training");
+const { getTrainingFromList, sendTraining, deleteTraining, saveTrainingList, createNewTraining, getTrainingList, resetTrainingList, changeTraining } = require("./src/js/training");
 const myEmitter = new EventEmitter();
 const app = express();
 const path = require("path");
@@ -63,11 +63,11 @@ wsServer.on('request', function(request) {
             // console.log(sendObj);
             connection.sendUTF(sendObj);
         } );
-
     connection.on('message', function(message) {
-        // getData(message);
-        console.log(message);
+        let training = JSON.parse(message.utf8Data);
+        changeTraining(training);
     });
+
 
     // If connection is closed
      connection.on('close', function(reasonCode, description) {

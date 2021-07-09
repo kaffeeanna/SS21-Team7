@@ -2,7 +2,9 @@
 const { getData } = require("./src/js/training");
 const WebSocketClient = require("websocket").client;
 const EventEmitter = require('events');
+const http = require("http");
 const myEmitter = new EventEmitter();
+let training;
 
 //IP vom Server!!! windows ipconfig
 //lab: 10.110.0.103
@@ -26,19 +28,40 @@ client.on('connect', function(connection) {
     });
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
-            console.log("Received: '" + message.utf8Data + "'");
+            myEmitter.emit('getData', JSON.parse(message.utf8Data));
         }
     });
     
-    function sendNumber() {
-        if (connection.connected) {
-            var number = Math.round(Math.random() * 0xFFFFFF);
-            connection.sendUTF(number.toString());
-            setTimeout(sendNumber, 1000);
-        }
-    }
-    // sendNumber();
+    myEmitter.on("sendData", (data) => {
+        console.log(data);
+        connection.sendUTF(data);
+    })
 });
+
+myEmitter.on('getData', (data) => {
+    switch (data.msg) {
+        case "get":
+        sendData();
+        break;
+        case "send":
+        useData(data.data);
+        break;
+        default:
+        console.log(":O")
+        break;
+    }
+});
+
+function sendData() {
+let sendObj = JSON.stringify(training);
+myEmitter.emit("sendData", sendObj);
+console.log("sended back");
+}
+function useData(data) {
+console.log("do something");
+training = data;
+training.name = "HALALALALALA";
+}
 
 client.connect('ws://' + ip + ':8080/', 'echo-protocol');
 console.log("client listening on " + ip);

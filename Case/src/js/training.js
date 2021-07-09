@@ -132,6 +132,16 @@ function resetTrainingList(){
     });
 }
 
+async function changeTraining(training){
+    let list = await getTrainingList();
+    for (let i = 0; i < list.trainingList.length; i++){
+        if (list.trainingList[i].id === training.id){
+            list.trainingList[i] = training;
+        }
+    }
+    saveTrainingList(list);
+}
+
 module.exports = {
     getTrainingFromList,
     sendTraining,
@@ -139,5 +149,6 @@ module.exports = {
     saveTrainingList,
     createNewTraining,
     getTrainingList,
-    resetTrainingList
+    resetTrainingList,
+    changeTraining
 }
