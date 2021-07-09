@@ -55,7 +55,7 @@ wsServer.on('request', function(request) {
     let connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
     clientConnected = true;
-    console.log(clientConnected);
+    // console.log(clientConnected);
 
     //sends Data
         myEmitter.on('sendData', (data) => {
@@ -72,7 +72,7 @@ wsServer.on('request', function(request) {
      connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
         clientConnected = false;
-        console.log(clientConnected);
+        // console.log(clientConnected);
     });
 });
 
@@ -198,6 +198,11 @@ app.all("/trainings/:name/delete", async (req, res) =>{
     res.redirect("/trainings");
 });
 
+app.all("/reset", async (req, res) => {
+    resetTrainingList();
+    res.redirect("/help");
+});
+
 app.post("/trainings/new/myNewTraining", async (req, res, next) => {
     let list = await getTrainingList();
     let trainingName = req.body.trainingName;  
@@ -208,16 +213,13 @@ app.post("/trainings/new/myNewTraining", async (req, res, next) => {
       };
     // res.json(newTraining);
     createNewTraining(training).then((list) => {
-        saveTrainingList(list).then((list) => {
-        });
+        saveTrainingList(list);
     },
     (err) => {
         console.log("there was an error "+ err);
     });
     res.redirect("/trainings");
 });
-
-resetTrainingList();
 
 app.listen(3001);
 console.log("listening on http://localhost:3001");
