@@ -6,6 +6,7 @@ const { getTrainingFromList, sendTraining, deleteTraining, saveTrainingList, cre
 const myEmitter = new EventEmitter();
 const app = express();
 const path = require("path");
+let clientConnected = false;
 // let trainingList = [];
 
         //trainingList looks like: [{training1}, {training2}]
@@ -53,13 +54,13 @@ wsServer.on('request', function(request) {
     
     let connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
+    clientConnected = true;
+    console.log(clientConnected);
 
     //sends Data
         myEmitter.on('sendData', (data) => {
             sendObj = JSON.stringify(data);
-            connection.send(sendObj);
-            console.log("send");
-            console.log(sendObj);
+            // console.log(sendObj);
         } );
 
     connection.on('message', function(message) {
@@ -70,6 +71,8 @@ wsServer.on('request', function(request) {
     // If connection is closed
      connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+        clientConnected = false;
+        console.log(clientConnected);
     });
 });
 
@@ -81,7 +84,7 @@ function originIsAllowed(origin) {
 app.use(express.urlencoded({ extended: false}));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname,"views"));
+app.set("views", path.join(__dirname, "views"));
   
 //post, get, all
 app.all("/",(req, res) => {
@@ -138,10 +141,15 @@ app.all("/trainings/:name/send", async (req, res) =>{
             training = list.trainingList[i];
         }
     }
-    if (status === true){
+    if (status === true && clientConnected === true){
         sendTraining(myEmitter, list, "send", training.id);
         }
+        if (clientConnected === true){
         res.render("send", {list, training});
+        } else {
+            res.redirect("/trainings");
+            console.log("Ring is not connected.");
+        }
 });
 
 app.all("/trainings/:name/send/back", async (req, res) =>{
@@ -156,10 +164,18 @@ app.all("/trainings/:name/send/back", async (req, res) =>{
             training = list.trainingList[i];
         }
     }
-    if (status === true){
+    if (status === true && clientConnected === true){
         sendTraining(myEmitter, list, "get", training.id);
         }
+        if (clientConnected === true){
         res.redirect("/trainings");
+        }
+        else {
+            console.log("Ring is not connected.");
+            // console.log(req.get("referer"))
+            // res.redirect(req.originalUrl, {name})
+            res.render("send", {list, training});
+        }
 });
 
 app.all("/trainings/:name/delete", async (req, res) =>{
@@ -201,7 +217,7 @@ app.post("/trainings/new/myNewTraining", async (req, res, next) => {
     res.redirect("/trainings");
 });
 
-// resetTrainingList();
+resetTrainingList();
 
 app.listen(3001);
 console.log("listening on http://localhost:3001");
