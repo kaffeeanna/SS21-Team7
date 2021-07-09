@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-const { saveTraining, getTraining } = require("./src/js/training");
+const { saveTraining, getTraining, getRandomWord } = require("./src/js/training");
 const WebSocketClient = require("websocket").client;
 const EventEmitter = require('events');
-const fetch = require("node-fetch");
 const http = require("http");
 const myEmitter = new EventEmitter();
 let training;
@@ -60,23 +59,6 @@ myEmitter.emit("sendData", sendObj);
 console.log("sended back");
 }
 
-async function getRandomWord(){
-    return new Promise(async (resolve)=>{
-        const url = `https://random-words-api.vercel.app/word`;
-  
-        const response = await fetch(url);
-        if (response.status != 200) {
-          // throw error if response status is not Ok
-          throw Error("RescueTrack error");
-        }
-      
-        const data = await response.json();
-        resolve(data[0].word);
-    },
-    (reject)=>{
-        reject("there was an error");
-    });
-}
     // return json;
     // getRandomWord();
 
