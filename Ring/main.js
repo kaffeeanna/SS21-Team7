@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const { getData } = require("./src/js/training");
+const { saveTraining, getTraining } = require("./src/js/training");
 const WebSocketClient = require("websocket").client;
 const EventEmitter = require('events');
 const http = require("http");
@@ -47,20 +47,23 @@ myEmitter.on('getData', (data) => {
         useData(data.data);
         break;
         default:
-        console.log(":O")
+        console.log("something unexpected happened while the case sended something to the ring")
         break;
     }
 });
 
-function sendData() {
+async function sendData() {
+let training = await getTraining();
 let sendObj = JSON.stringify(training);
 myEmitter.emit("sendData", sendObj);
 console.log("sended back");
 }
-function useData(data) {
+
+async function useData(data) {
 console.log("do something");
 training = data;
 training.name = "HALALALALALA";
+saveTraining(training);
 }
 
 client.connect('ws://' + ip + ':8080/', 'echo-protocol');

@@ -201,7 +201,7 @@ app.all("/trainings/:name/delete", async (req, res) =>{
 
 app.all("/reset", async (req, res) => {
     resetTrainingList();
-    res.redirect("/help");
+    res.redirect("..");
 });
 
 app.post("/trainings/new/myNewTraining", async (req, res, next) => {
