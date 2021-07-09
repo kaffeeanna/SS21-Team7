@@ -1,10 +1,16 @@
 #!/usr/bin/env node
-const { saveTraining, getTraining, getRandomWord } = require("./src/js/training");
+const { saveTraining, getTraining, getRandomWord, startRecording, stopRecording} = require("./src/js/training");
 const WebSocketClient = require("websocket").client;
+const WebSocketServer = require('websocket').server;
 const EventEmitter = require('events');
+const express = require("express");
+const path = require("path");
 const http = require("http");
+
+const app = express();
 const myEmitter = new EventEmitter();
 let training;
+let doIhaveATraining
 
 //IP vom Server!!! windows ipconfig
 //lab: 10.110.0.103
@@ -59,8 +65,7 @@ myEmitter.emit("sendData", sendObj);
 console.log("sended back");
 }
 
-    // return json;
-    // getRandomWord();
+
 
 async function useData(data) {
 console.log("do something");
@@ -87,6 +92,55 @@ training.objectList[0].randomWord = await getRandomWord();
 
 saveTraining(training);
 }
+
+
+
+// app.all("/",(req, res) => {
+    // res.render("waiting");
+    // res.sendFile(path.join(__dirname + '/index.html', {name}));
+    // startRecording();
+    
+// });
+// app.all("/training", (req, res) => {
+    // res.render("index", {training});
+// });
+
+// app.all("/rec", async (req, res) => {
+    // startRecording();
+    // res.render("index");
+    // let name = 12;
+    // res.sendFile(path.join(__dirname + '/index.html', {name}));
+
+// });
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("/", (req, res) => {
+    // res.send("index.html");
+    res.sendFile(path.join(__dirname + '/index.html'));
+  });
+
+  app.get("/data", (req, res) => {
+    res.send(training);
+  })
+
+// app.post("/training", function (req, res) {
+//     res.send();
+//   });
+
+// app.use("/", express.static("/"));
+app.listen(3002);
+
+// const requestListener = function (req, res) {
+//   res.writeHead(200);
+//   res.end('Hello, World!');
+//   res.render("index.html");
+// }
+
+// const browserServer = http.createServer();
+// browserServer.listen(3002);
+
+console.log("listening on http://localhost:3002")
 
 client.connect('ws://' + ip + ':8080/', 'echo-protocol');
 console.log("client listening on " + ip);

@@ -9,5 +9,7 @@ Repository für Team 7
 3. führe in beiden Terminals npm install aus
 4. gehe in /Ring/main.js und gebe dort deine IP adresse (bei windows im terminal ipconfig eingeben) für den Client ein
 5. führe in beiden Terminals node main.js aus
-5. öffne den Browser in Terminal1(Server) und gehe auf http://localhost:3001
+5. öffne den Browser in Terminal1(Server) und gehe auf http://localhost:3001    | Das ist das Case
+5. öffne den Browser in Terminal1(Server) und gehe auf http://localhost:3002    | Das ist der Ring
+
 

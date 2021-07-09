@@ -1,5 +1,21 @@
 const fs = require("fs");
 const fetch = require("node-fetch");
+const record = require('node-mic-record')
+
+
+function startRecording(){
+    let file = fs.createWriteStream('test.wav', { encoding: 'binary' })
+
+    record.start({
+      sampleRate : 44100,
+      verbose : true
+    })
+    .pipe(file);
+}
+
+function stopRecording(){
+
+}
 
 function saveTraining(training) {
     return new Promise(resolve => { 
@@ -56,4 +72,6 @@ module.exports = {
     saveTraining,
     getTraining,
     getRandomWord,
+    startRecording,
+    stopRecording
 }

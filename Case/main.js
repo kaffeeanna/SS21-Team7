@@ -18,7 +18,7 @@ let clientConnected = false;
         //resetTrainingList() | resets the trainingList and all data that was saved before | WORKS
         //deleteTraining(list, id/name) | deletes the training with the given id or name from the list
         //do stuff
-        // next steps: do ring stuff, added sound input and output
+        // next steps: added sound input and output
 
 /**
  * Server initialised
