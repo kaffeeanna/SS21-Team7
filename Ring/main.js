@@ -62,7 +62,25 @@ console.log("sended back");
 async function useData(data) {
 console.log("do something");
 training = data;
-training.name = "HALALALALALA";
+// training.name = "HALALALALALA";
+//edit training
+
+if (training.alreadyKnown){
+    //scanObject
+    //isInformationToRemember?
+        //displayInformationToRemember
+    //getData
+
+}
+else {
+    //scanObject
+    //isInformationToRemember?
+        //displayInformationToRemember
+    //createRandomWord
+    //displayRandomWord
+    //setData
+}
+
 saveTraining(training);
 }
 
