@@ -4,11 +4,17 @@ const scanObjContainer = document.getElementById("scanObject");
 const showObjectContainer = document.getElementById("showObject");
 const getRandomWordContainer = document.getElementById("getRandomWord");
 const getMessageContainer = document.getElementById("getMessage");
+const showMessageContainer = document.getElementById("showMessage");
 
-const player = document.getElementById("player");
+const videoPlayer = document.getElementById("videoPlayer");
+const audioPlayer = document.getElementById("audioPlayer");
+
 const canvas = document.getElementById("canvas");
+const audioOutput = document.getElementById("audioOutput");
 const randomWord = document.getElementById("randomWord");
+
 const captureVideoBtn = document.getElementById("captureVideoBtn");
+const stopRecordingBtn = document.getElementById("stopRecording");
 
 const button = document.getElementById("btn");
 const content = document.getElementById("content");
@@ -30,6 +36,7 @@ scanObjContainer.style.display = "none";
 showObjectContainer.style.display = "none";
 getRandomWordContainer.style.display = "none";
 getMessageContainer.style.display = "none";
+showMessageContainer.style.display = "none";
 
 function updateContent() {
   setInterval(async () => {
@@ -61,6 +68,7 @@ function updateHTML(training) {
     showObjectContainer.style.display = "none";
     getRandomWordContainer.style.display = "none";
     getMessageContainer.style.display = "none";
+    showMessageContainer.style.display = "none";
     buttonStatus = "newObj";
     button.innerHTML = "weiter";
   } else {
@@ -70,34 +78,6 @@ function updateHTML(training) {
     // buttonStatus = "newObj";
     // btn.innerHTML = "neues Objekt";
   }
-}
-
-function scanImage() {
-  return new Promise((resolve) => {
-    const constraints = {
-      video: true,
-    };
-    // Attach the video stream to the video element and autoplay.
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-      player.srcObject = stream;
-      // console.log(stream);
-    });
-    captureVideoBtn.addEventListener("click", () => {
-      let context = canvas.getContext("2d");
-      // Draw the video frame to the canvas.
-      context.drawImage(player, 0, 0, canvas.width, canvas.height);
-      imgData = canvas.toDataURL("image/jpeg", 0.5);
-      newObject.objectData = imgData;
-      resolve(imgData);
-      // console.log(imgData);
-      // document.write('<img src="'+img+'"/>');
-      // data = context.getImageData(0, 0, canvas.width, canvas.height);
-      // console.log(data);
-      // context.drawImage(data, 0, 0);
-      // let med = canvas.toDataURL("image/jpeg", 0.5);
-      // console.log(med)
-    });
-  });
 }
 
 btn.addEventListener("click", async () => {
@@ -111,7 +91,7 @@ btn.addEventListener("click", async () => {
       getObjContainer.style.display = "none";
       scanObjContainer.style.display = "inherit";
       canvas.style.display = "none";
-      let img = await scanImage();
+      let img = await getImageData();
       image.src = img;
       canvas.style.display = "inherit";
       scanObjContainer.style.display = "none";
@@ -133,33 +113,23 @@ btn.addEventListener("click", async () => {
     case "captureAudio":
       getRandomWordContainer.style.display = "none";
       getMessageContainer.style.display = "inherit";
+      let audioData = await getAudioData();
+      audioOutput.src = audioData;
+      console.log(audioOutput);
+      buttonStatus = "showAudio";
+      break;
+    case "showAudio":
+      getMessageContainer.style.display = "none";
+      showMessageContainer.style.display = "inherit";
       buttonStatus = "last";
       break;
     case "last":
-      getMessageContainer.style.display = "none";
+      showMessageContainer.style.display = "none";
       let json = JSON.stringify(newObject);
       // console.log("sended: " + json);
       buttonStatus = "start";
       button.innerHTML = "zum Anfang";
-
-      fetch("/ressource", {
-        method: "POST",
-        body: json,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (myJson) {
-          console.log(myJson);
-        });
-      // fetch("/ressource", {method: "POST", body: json}).then(response => {
-      //     console.log(response);
-      // })
-      // buttonStatus = "start";
-      // button.innerHTML = "zum Anfang";
+      sendBack(json);
       break;
     case "start":
       getMessageContainer.style.display = "none";
@@ -171,9 +141,80 @@ btn.addEventListener("click", async () => {
       break;
   }
 });
-// addNewObjBtn.addEventListener("click", async () => {
 
-// });
+function getImageData() {
+  return new Promise((resolve) => {
+    const constraints = {
+      video: true,
+    };
+    // Attach the video stream to the video element and autoplay.
+    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+      videoPlayer.srcObject = stream;
+      // console.log(stream);
+    });
+    captureVideoBtn.addEventListener("click", () => {
+      let context = canvas.getContext("2d");
+      // Draw the video frame to the canvas.
+      context.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
+      imgData = canvas.toDataURL("image/jpeg", 0.5);
+      newObject.objectData = imgData;
+      resolve(imgData);
+    });
+  });
+}
+
+async function getAudioData() {
+  return new Promise(async (resolve) => {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      console.log("getUserMedia supported.");
+      navigator.mediaDevices
+        .getUserMedia(
+          // constraints - only audio needed for this app
+          {
+            audio: true,
+          }
+        )
+
+        // Success callback
+        .then(function (stream) {
+          const mediaRecorder = new MediaRecorder(stream);
+          let chunks = [];
+
+          mediaRecorder.start();
+          console.log(mediaRecorder.state);
+          console.log("recorder started");
+
+          mediaRecorder.ondataavailable = function (e) {
+            chunks.push(e.data);
+          };
+
+          stopRecordingBtn.addEventListener("click", () => {
+            mediaRecorder.stop();
+            console.log(mediaRecorder.state);
+            console.log("recorder stopped");
+          });
+
+          mediaRecorder.onstop = function (e) {
+            console.log("recorder stopped");
+            const blob = new Blob(chunks, { type: "audio/ogg" });
+            chunks = [];
+            const audioURL = window.URL.createObjectURL(blob);
+            console.log(audioURL);
+            resolve(audioURL);
+          };
+        })
+
+        // Error callback
+        .catch(function (err) {
+          console.log("The following getUserMedia error occurred: " + err);
+        });
+    } else {
+      console.log("getUserMedia not supported on your browser!");
+    }
+  }).catch((e) => {
+    console.log("there was an error " + e);
+  });
+}
 
 async function getRandomWord() {
   return new Promise(
@@ -194,6 +235,25 @@ async function getRandomWord() {
     }
   );
 }
+
+async function sendBack(data) {
+  fetch("/ressource", {
+    method: "POST",
+    body: json,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (myJson) {
+      console.log(myJson);
+    });
+}
+// addNewObjBtn.addEventListener("click", async () => {
+
+// });
 
 // fetch("/ressource", {method: "POST", body: "daten-die-ich-senden-will"}).then(response => {
 //     console.log(response);

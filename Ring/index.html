@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html>
-    <head>
-    </head>
-    <body>
-        <h1 id="headline"></h1>
-        <div id="content" style="display: none;">
-            <button id="btn">weiter</button>
-            <div id="getObject">
-            </div>
-            <div id="scanObject">
-                <button id="captureVideoBtn">aufnehmen</button>
-                <video id="player" autoplay></video>
-                <canvas id="canvas" width=320 height=240></canvas>    
-            </div>
-            <div id="showObject">
-                <img id="displayObject" src=""/>
-            </div>
-            <div id="getRandomWord">
-                <p>Random Wort:</p>
-                <p id="randomWord"></p>
-            </div>
-            <div id="getMessage">
-                <p>Audio aufnehmen</p>
-            </div>
-        </div>
-        <script type="text/javascript" src="web.js"></script>
-    </body>
+  <head> </head>
+  <body>
+    <h1 id="headline"></h1>
+    <div id="content" style="display: none">
+      <button id="btn">weiter</button>
+      <div id="getObject"></div>
+      <div id="scanObject">
+        <button id="captureVideoBtn">aufnehmen</button>
+        <video id="videoPlayer" autoplay></video>
+        <canvas id="canvas" width="320" height="240"></canvas>
+      </div>
+      <div id="showObject">
+        <img id="displayObject" src="" />
+      </div>
+      <div id="getRandomWord">
+        <p>Random Wort:</p>
+        <p id="randomWord"></p>
+      </div>
+      <div id="getMessage">
+        <audio id="audioPlayer" controls></audio>
+        <button id="stopRecording">aufnahme beenden</button>
+      </div>
+      <div id="showMessage">
+        <audio controls="controls">
+          <source id="audioOutput" src="" type="audio/mp3" />
+        </audio>
+      </div>
+    </div>
+    <script type="text/javascript" src="web.js"></script>
+  </body>
 </html>
