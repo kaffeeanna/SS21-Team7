@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-const { saveTraining, getTraining, getRandomWord, startRecording, stopRecording} = require("./src/js/training");
+const { saveTraining, getTraining } = require("./src/js/training");
 const WebSocketClient = require("websocket").client;
-const WebSocketServer = require('websocket').server;
 const EventEmitter = require('events');
 const express = require("express");
 const path = require("path");
@@ -10,7 +9,6 @@ const http = require("http");
 const app = express();
 const myEmitter = new EventEmitter();
 let training;
-let doIhaveATraining
 
 //IP vom Server!!! windows ipconfig
 //lab: 10.110.0.103
@@ -41,6 +39,7 @@ client.on('connect', function(connection) {
     myEmitter.on("sendData", (data) => {
         console.log(data);
         connection.sendUTF(data);
+        training = null;
     })
 });
 
@@ -70,7 +69,7 @@ console.log("sended back");
 async function useData(data) {
 console.log("do something");
 training = data;
-training.objectList[0].randomWord = await getRandomWord();
+// training.objectList[0].randomWord = await getRandomWord();
 // training.name = "HALALALALALA";
 //edit training
 
@@ -120,9 +119,16 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
   });
 
-  app.get("/data", (req, res) => {
+app.get("/data", (req, res) => {
     res.send(training);
-  })
+});
+
+app.post("/ressource", (req, res) => {
+console.log(req.body);
+});
+
+
+
 
 // app.post("/training", function (req, res) {
 //     res.send();

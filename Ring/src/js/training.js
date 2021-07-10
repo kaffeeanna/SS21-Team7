@@ -1,21 +1,5 @@
 const fs = require("fs");
-const fetch = require("node-fetch");
-const record = require('node-mic-record')
-
-
-function startRecording(){
-    let file = fs.createWriteStream('test.wav', { encoding: 'binary' })
-
-    record.start({
-      sampleRate : 44100,
-      verbose : true
-    })
-    .pipe(file);
-}
-
-function stopRecording(){
-
-}
+// const fetch = require("node-fetch");
 
 function saveTraining(training) {
     return new Promise(resolve => { 
@@ -50,28 +34,7 @@ function getTraining() {
     }); 
 }
 
-async function getRandomWord(){
-    return new Promise(async (resolve)=>{
-        const url = `https://random-words-api.vercel.app/word`;
-  
-        const response = await fetch(url);
-        if (response.status != 200) {
-          // throw error if response status is not Ok
-          throw Error("RescueTrack error");
-        }
-      
-        const data = await response.json();
-        resolve(data[0].word);
-    },
-    (reject)=>{
-        reject("there was an error");
-    });
-}
-
 module.exports = {
     saveTraining,
-    getTraining,
-    getRandomWord,
-    startRecording,
-    stopRecording
+    getTraining
 }
