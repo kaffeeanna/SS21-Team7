@@ -114,7 +114,10 @@ btn.addEventListener("click", async () => {
       getRandomWordContainer.style.display = "none";
       getMessageContainer.style.display = "inherit";
       let audioData = await getAudioData();
-      audioOutput.src = audioData;
+      let audioURL = window.URL.createObjectURL(audioData);
+      newObject.audioData = audioURL;
+      console.log(newObject.audioData);
+      audioOutput.src = audioURL;
       console.log(audioOutput);
       buttonStatus = "showAudio";
       break;
@@ -165,56 +168,51 @@ function getImageData() {
 
 async function getAudioData() {
   return new Promise(async (resolve) => {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      console.log("getUserMedia supported.");
-      navigator.mediaDevices
-        .getUserMedia(
-          // constraints - only audio needed for this app
-          {
-            audio: true,
-          }
-        )
+    let constraints = {
+      audio: true,
+      video: false,
+    };
 
-        // Success callback
-        .then(function (stream) {
-          const mediaRecorder = new MediaRecorder(stream);
-          let chunks = [];
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((mediaStreamObject) => {
+        if ("srcObject" in audioPlayer) {
+          audioPlayer.srcObject = mediaStreamObject;
+          //   console.log(mediaStreamObject);
+          //   resolve(mediaStreamObject);
+        }
+        // let start = document.getElementById("startRecording");
+        // let stop = document.getElementById("stopRecording");
+        let mediaRecorder = new MediaRecorder(mediaStreamObject);
+        let chunks = [];
 
-          mediaRecorder.start();
+        mediaRecorder.start();
+        console.log(mediaRecorder.state);
+
+        stopRecordingBtn.addEventListener("click", () => {
+          mediaRecorder.stop();
           console.log(mediaRecorder.state);
-          console.log("recorder started");
-
-          mediaRecorder.ondataavailable = function (e) {
-            chunks.push(e.data);
-          };
-
-          stopRecordingBtn.addEventListener("click", () => {
-            mediaRecorder.stop();
-            console.log(mediaRecorder.state);
-            console.log("recorder stopped");
-          });
-
-          mediaRecorder.onstop = function (e) {
-            console.log("recorder stopped");
-            const blob = new Blob(chunks, { type: "audio/ogg" });
-            chunks = [];
-            const audioURL = window.URL.createObjectURL(blob);
-            console.log(audioURL);
-            resolve(audioURL);
-          };
-        })
-
-        // Error callback
-        .catch(function (err) {
-          console.log("The following getUserMedia error occurred: " + err);
         });
-    } else {
-      console.log("getUserMedia not supported on your browser!");
-    }
+
+        mediaRecorder.ondataavailable = function (ev) {
+          chunks.push(ev.data);
+        };
+        mediaRecorder.onstop = (ev) => {
+          let blob = new Blob(chunks, { type: "mp3/ogg;" });
+          chunks = [];
+          //   let audioURL = window.URL.createObjectURL(blob);
+          resolve(blob);
+        };
+      })
+      .catch((e) => {
+        console.log("there was an error :" + e);
+      });
   }).catch((e) => {
     console.log("there was an error " + e);
   });
 }
+
+// getAudioData();
 
 async function getRandomWord() {
   return new Promise(
@@ -236,7 +234,7 @@ async function getRandomWord() {
   );
 }
 
-async function sendBack(data) {
+async function sendBack(json) {
   fetch("/ressource", {
     method: "POST",
     body: json,
