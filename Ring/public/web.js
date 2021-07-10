@@ -115,10 +115,11 @@ btn.addEventListener("click", async () => {
       getMessageContainer.style.display = "inherit";
       let audioData = await getAudioData();
       let audioURL = window.URL.createObjectURL(audioData);
-      newObject.audioData = audioURL;
-      console.log(newObject.audioData);
+      let formData = new FormData(audioData);
+      newObject.audioData = formData;
+      console.log(formData);
       audioOutput.src = audioURL;
-      console.log(audioOutput);
+      //   console.log(audioOutput);
       buttonStatus = "showAudio";
       break;
     case "showAudio":
@@ -128,6 +129,7 @@ btn.addEventListener("click", async () => {
       break;
     case "last":
       showMessageContainer.style.display = "none";
+      newObject.alreadyKnown = true;
       let json = JSON.stringify(newObject);
       // console.log("sended: " + json);
       buttonStatus = "start";
@@ -200,7 +202,6 @@ async function getAudioData() {
         mediaRecorder.onstop = (ev) => {
           let blob = new Blob(chunks, { type: "mp3/ogg;" });
           chunks = [];
-          //   let audioURL = window.URL.createObjectURL(blob);
           resolve(blob);
         };
       })
