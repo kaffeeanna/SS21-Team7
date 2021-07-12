@@ -103,7 +103,7 @@ app.post("/ressource", async (req, res) => {
   // console.log("new data received from ring express" + req);
   let training = await getTraining();
 
-  // console.log(req.body);
+  console.log(req.body);
   // console.log(req.body.id);
   //     console.log(training);
   training.objectList[req.body.id] = req.body;

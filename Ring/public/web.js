@@ -113,11 +113,21 @@ btn.addEventListener("click", async () => {
     case "captureAudio":
       getRandomWordContainer.style.display = "none";
       getMessageContainer.style.display = "inherit";
+      // let fd = new FormData();
       let audioData = await getAudioData();
       let audioURL = window.URL.createObjectURL(audioData);
-      let formData = new FormData(audioData);
-      newObject.audioData = formData;
-      console.log(formData);
+
+      let blob64 = await blobToB64(audioData);
+
+      console.log("audiodata: " + audioData);
+      console.log("blobTo64: " + blob64);
+      // from the internet
+
+      // fd.append("upl", audioData, "blobby.txt");
+      // sendBack(fd);
+      // let formData = new FormData(audioData);
+      newObject.audioData = blob64;
+      console.log(newObject);
       audioOutput.src = audioURL;
       //   console.log(audioOutput);
       buttonStatus = "showAudio";
@@ -131,6 +141,7 @@ btn.addEventListener("click", async () => {
       showMessageContainer.style.display = "none";
       newObject.alreadyKnown = true;
       let json = JSON.stringify(newObject);
+      // let json = JSON.stringify({ blob: newObject.audioData });
       // console.log("sended: " + json);
       buttonStatus = "start";
       button.innerHTML = "zum Anfang";
@@ -260,3 +271,19 @@ async function sendBack(json) {
 
 //https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 //https://expressjs.com/en/guide/routing.html
+
+async function blobToB64(blob) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+      resolve(reader.result);
+    };
+  });
+}
+
+// (async () => {
+// const b64 = await blobToBase64(blob);
+// const jsonString = JSON.stringify({ blob: b64 });
+// console.log(jsonString)
+// })();
