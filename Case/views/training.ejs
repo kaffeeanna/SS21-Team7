@@ -6,8 +6,7 @@
   </head>
   <body>
     <h1><%=training.name%></h1>
-    <%console.log(training);%> <% for (let i = 0; i <
-    training.objectList.length; i++){%> <%if
+    <% for (let i = 0; i < training.objectList.length; i++){%> <%if
     (training.objectList[i].alreadyKnown){%>
     <h2>#<%=training.objectList[i].id%></h2>
     <p><%=training.objectList[i].randomWord%></p>
@@ -16,7 +15,7 @@
       src="<%=training.objectList[i].audioData%>"
     ></audio>
     <p>__________________________________________________</p>
-    <%console.log(training.objectList[i].audioData)%> <%}}%>
+    <%}}%>
 
     <div class="container">
       <a href="/trainings" method="POST" class="button">zurück</a>

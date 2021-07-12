@@ -5,6 +5,7 @@ const showObjectContainer = document.getElementById("showObject");
 const getRandomWordContainer = document.getElementById("getRandomWord");
 const getMessageContainer = document.getElementById("getMessage");
 const showMessageContainer = document.getElementById("showMessage");
+const msg = document.getElementById("msg");
 
 const videoPlayer = document.getElementById("videoPlayer");
 const audioPlayer = document.getElementById("audioPlayer");
@@ -79,6 +80,19 @@ function updateHTML(training) {
 
 btn.addEventListener("click", async () => {
   //different states of the button / of the content
+  //checks if its a new OR an old training
+  if (training.objectList.length > 0) {
+    //old training
+    oldTraining();
+  } else {
+    //new Training
+    newTraining();
+  }
+});
+
+//WORKS
+async function newTraining() {
+  msg.innerHTML = "new Training";
   switch (buttonStatus) {
     case "newObj":
       newObject.id = id;
@@ -130,6 +144,7 @@ btn.addEventListener("click", async () => {
       newObject.alreadyKnown = true;
       let json = JSON.stringify(newObject);
       // console.log("sended: " + json);
+      console.log(newObject);
       buttonStatus = "start";
       button.innerHTML = "zum Anfang";
       sendBack(json);
@@ -143,8 +158,62 @@ btn.addEventListener("click", async () => {
       // console.log(training.objectList);
       break;
   }
-});
+}
 
+//WIP
+async function oldTraining() {
+  msg.innerHTML = "old Training";
+  switch (buttonStatus) {
+    case "newObj":
+      let image = document.getElementById("displayObject");
+      // btn.innerHTML = "neues Objekt";
+      getObjContainer.style.display = "none";
+      scanObjContainer.style.display = "inherit";
+      canvas.style.display = "none";
+      let img = await getImageData();
+      image.src = img;
+      canvas.style.display = "inherit";
+      scanObjContainer.style.display = "none";
+
+      let fakeAi = await getFakeAIAnswerIfObjectIsKnown(training);
+      if (fakeAi.status) {
+        buttonStatus = "showAudio";
+        msg.innerHTML = "das Objekt wurde erkannt";
+        console.log(fakeAi.val.audioData);
+        // let d = window.URL.createObjectURL(fakeAi.val.audioData);
+        // console.log(d);
+        audioOutput.src = fakeAi.val.audioData;
+      } else {
+        msg.innerHTML = "das Objekt wurde nicht erkannt";
+      }
+
+      button.innerHTML = "weiter";
+      showObjectContainer.style.display = "inherit";
+      break;
+    case "showAudio":
+      showObjectContainer.style.display = "none";
+      showMessageContainer.style.display = "inherit";
+      buttonStatus = "last";
+      break;
+    case "last":
+      showMessageContainer.style.display = "none";
+      newObject.alreadyKnown = true;
+      let json = JSON.stringify(newObject);
+      // console.log("sended: " + json);
+      buttonStatus = "start";
+      button.innerHTML = "zum Anfang";
+      sendBack(json);
+      break;
+    case "start":
+      getMessageContainer.style.display = "none";
+      getObjContainer.style.display = "inherit";
+      buttonStatus = "newObj";
+      button.innerHTML = "neues Objekt scannen";
+      // training.objectList.push(newObject);
+      // console.log(training.objectList);
+      break;
+  }
+}
 //https://developers.google.com/web/fundamentals/media/recording-audio#access_the_microphone_interactively
 function getImageData() {
   return new Promise((resolve) => {
@@ -207,6 +276,25 @@ async function getAudioData() {
       });
   }).catch((e) => {
     console.log("there was an error " + e);
+  });
+}
+
+function getFakeAIAnswerIfObjectIsKnown(training) {
+  return new Promise((resolve) => {
+    let fakeAIArray = ["no"];
+    //the chance for the AI to "find" the object is 1/objectlist.length
+    for (let i = 0; i < training.objectList.length; i++) {
+      fakeAIArray.push(training.objectList[i]);
+      // fakeAIArray.push("no");
+    }
+    let val = fakeAIArray[Math.floor(Math.random() * fakeAIArray.length)];
+    if (val === "no") {
+      resolve({ status: false });
+    } else {
+      resolve({ status: true, val: val });
+    }
+  }).catch((e) => {
+    console.log("there was an error: " + e);
   });
 }
 
