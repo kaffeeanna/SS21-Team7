@@ -5,6 +5,8 @@ const showObjectContainer = document.getElementById("showObject");
 const getRandomWordContainer = document.getElementById("getRandomWord");
 const getMessageContainer = document.getElementById("getMessage");
 const showMessageContainer = document.getElementById("showMessage");
+const showInfoContainer = document.getElementById("showInfo");
+const infoToRemember = document.getElementById("infoToRemember");
 const msg = document.getElementById("msg");
 
 const videoPlayer = document.getElementById("videoPlayer");
@@ -82,11 +84,24 @@ btn.addEventListener("click", async () => {
   //different states of the button / of the content
   //checks if its a new OR an old training
   if (training.objectList.length > 0) {
-    //old training
-    oldTraining();
+    console.log(training.objectList[0].audioData);
+    if (
+      (training.objectList[0].informationToRemember !== null &&
+        training.objectList[0].audioData === null) ||
+      (training.objectList[0].informationToRemember !== null &&
+        training.objectList[0].audioData === undefined)
+    ) {
+      newTraining();
+      console.log("3");
+    } else {
+      //old training
+      oldTraining();
+      console.log("2");
+    }
   } else {
     //new Training
     newTraining();
+    console.log("1");
   }
 });
 
@@ -95,9 +110,6 @@ async function newTraining() {
   msg.innerHTML = "new Training";
   switch (buttonStatus) {
     case "newObj":
-      newObject.id = id;
-      newObject.alreadyKnown = false;
-      id = id + 1;
       let image = document.getElementById("displayObject");
       // btn.innerHTML = "neues Objekt";
       getObjContainer.style.display = "none";
@@ -119,10 +131,27 @@ async function newTraining() {
       newObject.randomWord = randomWordContent;
       randomWord.innerHTML = randomWordContent;
       randomWord.style.display = "inherit";
-      buttonStatus = "captureAudio";
+      if (getInformationToRemember(training, id)) {
+        buttonStatus = "showInfo";
+      } else {
+        buttonStatus = "captureAudio";
+      }
+      newObject.id = id;
+      newObject.alreadyKnown = false;
+      id = id + 1;
       button.innerHTML = "weiter";
       break;
+    case "showInfo":
+      getRandomWordContainer.style.display = "none";
+      showInfoContainer.style.display = "inherit";
+      newObject.informationToRemember =
+        training.objectList[id - 1].informationToRemember;
+      infoToRemember.innerHTML =
+        training.objectList[id - 1].informationToRemember;
+      buttonStatus = "captureAudio";
+      break;
     case "captureAudio":
+      showInfoContainer.style.display = "none";
       getRandomWordContainer.style.display = "none";
       getMessageContainer.style.display = "inherit";
       // let fd = new FormData();
@@ -160,7 +189,7 @@ async function newTraining() {
   }
 }
 
-//WIP
+//WORKS
 async function oldTraining() {
   msg.innerHTML = "old Training";
   switch (buttonStatus) {
@@ -193,19 +222,10 @@ async function oldTraining() {
     case "showAudio":
       showObjectContainer.style.display = "none";
       showMessageContainer.style.display = "inherit";
-      buttonStatus = "last";
-      break;
-    case "last":
-      showMessageContainer.style.display = "none";
-      newObject.alreadyKnown = true;
-      let json = JSON.stringify(newObject);
-      // console.log("sended: " + json);
       buttonStatus = "start";
-      button.innerHTML = "zum Anfang";
-      sendBack(json);
       break;
     case "start":
-      getMessageContainer.style.display = "none";
+      showMessageContainer.style.display = "none";
       getObjContainer.style.display = "inherit";
       buttonStatus = "newObj";
       button.innerHTML = "neues Objekt scannen";
@@ -316,6 +336,15 @@ async function getRandomWord() {
       reject("there was an error");
     }
   );
+}
+
+async function getInformationToRemember(training, state) {
+  // for (let i = 0; i < training.objectList.length; i++) {
+  if (training.objectList[state].informationToRemember) {
+    console.log(training.objectList[state].informationToRemember);
+    return training.objectList[state].informationToRemember;
+  }
+  // }
 }
 
 //https://stackoverflow.com/questions/27232604/json-stringify-or-how-to-serialize-binary-data-as-base64-encoded-json
