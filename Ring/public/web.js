@@ -18,8 +18,8 @@ const stopRecordingBtn = document.getElementById("stopRecording");
 
 const button = document.getElementById("btn");
 const content = document.getElementById("content");
-// let oldData;
 
+//EMPTY OBJECT
 let buttonStatus = "newObj";
 let training;
 let id = 0;
@@ -39,28 +39,28 @@ getMessageContainer.style.display = "none";
 showMessageContainer.style.display = "none";
 
 function updateContent() {
+  //every second the html Content will be updated
   setInterval(async () => {
     const response = await fetch("/data", { method: "GET" });
-    const isContentEmpty = response.headers.get("Content-Length") === "0";
 
+    //if express delivers no training
+    const isContentEmpty = response.headers.get("Content-Length") === "0";
     if (isContentEmpty) {
       updateHTML("no-content");
       return;
     }
 
     const data = await response.json();
-    // alreadyGotContent
-    // if (data !== oldData){
     updateHTML(data);
+    //overwrite training
     training = data;
-    // }
-    // oldData = data;
   }, 1000);
 }
 
 updateContent();
 
 function updateHTML(training) {
+  //manages if there is a training delivered by express OR not
   if (training === "no-content") {
     headline.innerHTML = "no training";
     content.style.display = "none";
@@ -74,13 +74,11 @@ function updateHTML(training) {
   } else {
     headline.innerHTML = training.name;
     content.style.display = "inherit";
-    // console.log(training);
-    // buttonStatus = "newObj";
-    // btn.innerHTML = "neues Objekt";
   }
 }
 
 btn.addEventListener("click", async () => {
+  //different states of the button / of the content
   switch (buttonStatus) {
     case "newObj":
       newObject.id = id;
@@ -116,20 +114,10 @@ btn.addEventListener("click", async () => {
       // let fd = new FormData();
       let audioData = await getAudioData();
       let audioURL = window.URL.createObjectURL(audioData);
-
       let blob64 = await blobToB64(audioData);
-
-      console.log("audiodata: " + audioData);
-      console.log("blobTo64: " + blob64);
-      // from the internet
-
-      // fd.append("upl", audioData, "blobby.txt");
-      // sendBack(fd);
-      // let formData = new FormData(audioData);
       newObject.audioData = blob64;
-      console.log(newObject);
+      // console.log(newObject);
       audioOutput.src = audioURL;
-      //   console.log(audioOutput);
       buttonStatus = "showAudio";
       break;
     case "showAudio":
@@ -141,7 +129,6 @@ btn.addEventListener("click", async () => {
       showMessageContainer.style.display = "none";
       newObject.alreadyKnown = true;
       let json = JSON.stringify(newObject);
-      // let json = JSON.stringify({ blob: newObject.audioData });
       // console.log("sended: " + json);
       buttonStatus = "start";
       button.innerHTML = "zum Anfang";
@@ -158,6 +145,7 @@ btn.addEventListener("click", async () => {
   }
 });
 
+//https://developers.google.com/web/fundamentals/media/recording-audio#access_the_microphone_interactively
 function getImageData() {
   return new Promise((resolve) => {
     const constraints = {
@@ -179,6 +167,7 @@ function getImageData() {
   });
 }
 
+//https://developers.google.com/web/fundamentals/media/recording-audio#access_the_microphone_interactively
 async function getAudioData() {
   return new Promise(async (resolve) => {
     let constraints = {
@@ -191,11 +180,8 @@ async function getAudioData() {
       .then((mediaStreamObject) => {
         if ("srcObject" in audioPlayer) {
           audioPlayer.srcObject = mediaStreamObject;
-          //   console.log(mediaStreamObject);
-          //   resolve(mediaStreamObject);
+          audioPlayer.style.display = "none";
         }
-        // let start = document.getElementById("startRecording");
-        // let stop = document.getElementById("stopRecording");
         let mediaRecorder = new MediaRecorder(mediaStreamObject);
         let chunks = [];
 
@@ -224,8 +210,6 @@ async function getAudioData() {
   });
 }
 
-// getAudioData();
-
 async function getRandomWord() {
   return new Promise(
     async (resolve) => {
@@ -246,32 +230,7 @@ async function getRandomWord() {
   );
 }
 
-async function sendBack(json) {
-  fetch("/ressource", {
-    method: "POST",
-    body: json,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (myJson) {
-      console.log(myJson);
-    });
-}
-// addNewObjBtn.addEventListener("click", async () => {
-
-// });
-
-// fetch("/ressource", {method: "POST", body: "daten-die-ich-senden-will"}).then(response => {
-//     console.log(response);
-// })
-
-//https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-//https://expressjs.com/en/guide/routing.html
-
+//https://stackoverflow.com/questions/27232604/json-stringify-or-how-to-serialize-binary-data-as-base64-encoded-json
 async function blobToB64(blob) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -281,9 +240,22 @@ async function blobToB64(blob) {
     };
   });
 }
-
 // (async () => {
 // const b64 = await blobToBase64(blob);
 // const jsonString = JSON.stringify({ blob: b64 });
 // console.log(jsonString)
 // })();
+
+async function sendBack(json) {
+  //https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+  //https://expressjs.com/en/guide/routing.html
+  fetch("/ressource", {
+    method: "POST",
+    body: json,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then(function (response) {
+    return response.json();
+  });
+}

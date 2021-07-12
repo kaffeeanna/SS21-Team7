@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Case</title>
-        <link rel="stylesheet" href="/style.css"/>
-    </head>
-    <body>
-        <h1><%=training.name%></h1>
-        <%console.log(training);%>
-        <% for (let i = 0; i < training.objectList.length; i++){%>
-            <%if (training.objectList[i].alreadyKnown){%>
-        <audio controls="controls" src="<%=training.objectList[i].audioData%>"></audio>
-        <%console.log(training.objectList[i].audioData)%>
-        <p><%=training.objectList[i].randomWord%></p>
-        </br>
-        <%}}%>
+  <head>
+    <title>Case</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <h1><%=training.name%></h1>
+    <%console.log(training);%> <% for (let i = 0; i <
+    training.objectList.length; i++){%> <%if
+    (training.objectList[i].alreadyKnown){%>
+    <h2>#<%=training.objectList[i].id%></h2>
+    <p><%=training.objectList[i].randomWord%></p>
+    <audio
+      controls="controls"
+      src="<%=training.objectList[i].audioData%>"
+    ></audio>
+    <p>__________________________________________________</p>
+    <%console.log(training.objectList[i].audioData)%> <%}}%>
 
-        <div class="container">
-            <a href="/trainings" method="POST" class="button">zurück</a>
-            <a href="/trainings/<%=training.name%>/send" method="POST" class="button">starten</a>
-            <a href="/trainings/<%=training.name%>/delete" method="POST" class="button">löschen</a>
-        </div>
-    </body>
+    <div class="container">
+      <a href="/trainings" method="POST" class="button">zurück</a>
+      <a href="/trainings/<%=training.name%>/send" method="POST" class="button"
+        >starten</a
+      >
+      <a
+        href="/trainings/<%=training.name%>/delete"
+        method="POST"
+        class="button"
+        >löschen</a
+      >
+    </div>
+  </body>
 </html>

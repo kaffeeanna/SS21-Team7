@@ -32,6 +32,8 @@ let clientConnected = false;
 /**
  * Server initialised
  */
+
+//https://www.npmjs.com/package/websocket
 const server = http.createServer(function (request, response) {
   console.log(new Date() + " Received request for " + request.url);
   response.writeHead(404);
@@ -93,6 +95,7 @@ function originIsAllowed(origin) {
   return true;
 }
 
+//https://expressjs.com/en/guide/routing.html
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");

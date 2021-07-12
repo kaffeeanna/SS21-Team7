@@ -70,23 +70,7 @@ async function useData(data) {
   saveTraining(training);
 }
 
-// app.all("/",(req, res) => {
-// res.render("waiting");
-// res.sendFile(path.join(__dirname + '/index.html', {name}));
-// startRecording();
-
-// });
-// app.all("/training", (req, res) => {
-// res.render("index", {training});
-// });
-
-// app.all("/rec", async (req, res) => {
-// startRecording();
-// res.render("index");
-// let name = 12;
-// res.sendFile(path.join(__dirname + '/index.html', {name}));
-
-// });
+//https://expressjs.com/en/guide/routing.html
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -112,21 +96,7 @@ app.post("/ressource", async (req, res) => {
   // console.log(res);
 });
 
-// app.post("/training", function (req, res) {
-//     res.send();
-//   });
-
-// app.use("/", express.static("/"));
 app.listen(3002);
-
-// const requestListener = function (req, res) {
-//   res.writeHead(200);
-//   res.end('Hello, World!');
-//   res.render("index.html");
-// }
-
-// const browserServer = http.createServer();
-// browserServer.listen(3002);
 
 console.log("listening on http://localhost:3002");
 
