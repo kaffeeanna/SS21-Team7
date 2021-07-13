@@ -39,6 +39,7 @@ p {
 
 canvas,
 video,
+audio,
 img {
   padding: 20px;
 }

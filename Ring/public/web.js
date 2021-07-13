@@ -131,17 +131,33 @@ async function newTraining() {
       newObject.randomWord = randomWordContent;
       randomWord.innerHTML = randomWordContent;
       randomWord.style.display = "inherit";
-      if (getInformationToRemember(training, id)) {
+      let d = await getInformationToRemember(training, id);
+      if (d === true) {
         buttonStatus = "showInfo";
+        // buttonStatus = "captureAudio";
+        // console.log()
       } else {
         buttonStatus = "captureAudio";
+        // buttonStatus = "showInfo";
       }
       newObject.id = id;
-      newObject.alreadyKnown = false;
       id = id + 1;
+      d = await getInformationToRemember(training, id - 1);
+      if (d === true) {
+        buttonStatus = "showInfo";
+      } else {
+        buttonStatus = "start";
+      }
+      newObject.alreadyKnown = false;
       button.innerHTML = "weiter";
       break;
     case "showInfo":
+      // if (
+      //   training.objectList[id - 1].informationToRemember === undefined ||
+      //   training.objectList[id - 1].informationToRemember === null
+      // ) {
+      // }
+      // else
       getRandomWordContainer.style.display = "none";
       showInfoContainer.style.display = "inherit";
       newObject.informationToRemember =
@@ -179,6 +195,10 @@ async function newTraining() {
       sendBack(json);
       break;
     case "start":
+      scanObjContainer.style.display = "none";
+      showObjectContainer.style.display = "none";
+      getRandomWordContainer.style.display = "none";
+      showMessageContainer.style.display = "none";
       getMessageContainer.style.display = "none";
       getObjContainer.style.display = "inherit";
       buttonStatus = "newObj";
@@ -338,12 +358,32 @@ async function getRandomWord() {
 }
 
 async function getInformationToRemember(training, state) {
-  // for (let i = 0; i < training.objectList.length; i++) {
-  if (training.objectList[state].informationToRemember) {
-    console.log(training.objectList[state].informationToRemember);
-    return training.objectList[state].informationToRemember;
-  }
-  // }
+  return new Promise((resolve) => {
+    // console.log(training);
+    // console.log(training.objectList);
+    // console.log(state);
+    if (training.objectList[state]) {
+      console.log(training.objectList[state].informationToRemember);
+
+      if (training.objectList[state].informationToRemember !== null) {
+        console.log(true);
+        resolve(true);
+      } else {
+        console.log(false);
+        resolve(false);
+      }
+    } else {
+      // if (trainin)
+      // console.log(false);
+      // return false;
+      console.log(false);
+      resolve(false);
+    }
+    // }
+    // }
+  }).catch((e) => {
+    console.log("there was an error: " + e);
+  });
 }
 
 //https://stackoverflow.com/questions/27232604/json-stringify-or-how-to-serialize-binary-data-as-base64-encoded-json

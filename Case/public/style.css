@@ -47,3 +47,8 @@ form > button {
   width: 120px;
   font-size: 16px;
 }
+
+button:hover {
+  cursor: pointer;
+  background-color: #ff6b00;
+}
