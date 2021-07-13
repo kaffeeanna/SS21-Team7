@@ -398,6 +398,7 @@ async function getInformationToRemember(training, state) {
 }
 
 //https://stackoverflow.com/questions/27232604/json-stringify-or-how-to-serialize-binary-data-as-base64-encoded-json
+//this function is basically copied from the internet
 async function blobToB64(blob) {
   return new Promise((resolve) => {
     const reader = new FileReader();
