@@ -2,12 +2,12 @@
   "trainingList": [
     {
       "id": 0,
-      "name": "presidents",
+      "name": "Bundeskanzler",
       "objectList": [
         {
           "id": 0,
           "alreadyKnown": false,
-          "informationToRemember": "Donald Trump",
+          "informationToRemember": "Konrad Adenauer",
           "randomWord": "Kirschkuchen",
           "audioData": null,
           "objectData": null
@@ -15,7 +15,63 @@
         {
           "id": 1,
           "alreadyKnown": false,
-          "informationToRemember": "Barack Obama",
+          "informationToRemember": "Ludwig Erhard",
+          "randomWord": "Mandelcreme",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 2,
+          "alreadyKnown": false,
+          "informationToRemember": "Kurt Georg Kiesinger",
+          "randomWord": "Kirschkuchen",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 3,
+          "alreadyKnown": false,
+          "informationToRemember": "Willy Brandt",
+          "randomWord": "Mandelcreme",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 4,
+          "alreadyKnown": false,
+          "informationToRemember": "Helmut Schmidt",
+          "randomWord": "Kirschkuchen",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 5,
+          "alreadyKnown": false,
+          "informationToRemember": "Helmut Kohl",
+          "randomWord": "Mandelcreme",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 6,
+          "alreadyKnown": false,
+          "informationToRemember": "Gerhard Schröder",
+          "randomWord": "Kirschkuchen",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 7,
+          "alreadyKnown": false,
+          "informationToRemember": "Angela Merkel",
+          "randomWord": "Mandelcreme",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 8,
+          "alreadyKnown": false,
+          "informationToRemember": "Die Reptiloiden",
           "randomWord": "Mandelcreme",
           "audioData": null,
           "objectData": null
@@ -24,20 +80,76 @@
     },
     {
       "id": 1,
-      "name": "presidentsas",
+      "name": "Star Wars Filme nach Erscheinung",
       "objectList": [
         {
           "id": 0,
           "alreadyKnown": false,
-          "informationToRemember": "Donald Trump",
+          "informationToRemember": "Eine neue Hoffnung",
           "randomWord": "Kirschkuchen",
           "audioData": null,
           "objectData": null
         },
         {
-          "id": 0,
+          "id": 1,
           "alreadyKnown": false,
-          "informationToRemember": "Barack Obama",
+          "informationToRemember": "Das Imperium schlägt zurück",
+          "randomWord": "Mandelcreme",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 2,
+          "alreadyKnown": false,
+          "informationToRemember": "Die Rückkehr der Jediritter",
+          "randomWord": "Kirschkuchen",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 3,
+          "alreadyKnown": false,
+          "informationToRemember": "Dunkle Bedrohung",
+          "randomWord": "Mandelcreme",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 4,
+          "alreadyKnown": false,
+          "informationToRemember": "Angriff der Klonkrieger",
+          "randomWord": "Kirschkuchen",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 5,
+          "alreadyKnown": false,
+          "informationToRemember": "Die Rache der Sith",
+          "randomWord": "Mandelcreme",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 6,
+          "alreadyKnown": false,
+          "informationToRemember": "Das Erwachen der Macht",
+          "randomWord": "Kirschkuchen",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 7,
+          "alreadyKnown": false,
+          "informationToRemember": "Die letzten Jedi",
+          "randomWord": "Mandelcreme",
+          "audioData": null,
+          "objectData": null
+        },
+        {
+          "id": 8,
+          "alreadyKnown": false,
+          "informationToRemember": "Der Aufstieg Skywalkers",
           "randomWord": "Mandelcreme",
           "audioData": null,
           "objectData": null
