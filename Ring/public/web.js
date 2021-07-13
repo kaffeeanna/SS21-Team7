@@ -65,7 +65,7 @@ updateContent();
 function updateHTML(training) {
   //manages if there is a training delivered by express OR not
   if (training === "no-content") {
-    headline.innerHTML = "no training";
+    headline.innerHTML = "kein Training";
     content.style.display = "none";
     scanObjContainer.style.display = "none";
     showObjectContainer.style.display = "none";
@@ -203,7 +203,6 @@ async function oldTraining() {
       image.src = img;
       canvas.style.display = "inherit";
       scanObjContainer.style.display = "none";
-
       let fakeAi = await getFakeAIAnswerIfObjectIsKnown(training);
       if (fakeAi.status) {
         buttonStatus = "showAudio";
@@ -211,13 +210,13 @@ async function oldTraining() {
         console.log(fakeAi.val.audioData);
         // let d = window.URL.createObjectURL(fakeAi.val.audioData);
         // console.log(d);
+        showObjectContainer.style.display = "inherit";
         audioOutput.src = fakeAi.val.audioData;
       } else {
         msg.innerHTML = "das Objekt wurde nicht erkannt";
       }
 
       button.innerHTML = "weiter";
-      showObjectContainer.style.display = "inherit";
       break;
     case "showAudio":
       showObjectContainer.style.display = "none";

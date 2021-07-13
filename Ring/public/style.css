@@ -13,7 +13,7 @@
   width: 100vw;
 }
 
-a {
+button {
   height: 50px;
   width: 500px;
   padding: 15px;
@@ -24,7 +24,7 @@ a {
   margin-top: 10px;
   font-size: 16pt;
 }
-a:hover {
+button:hover {
   background-color: #ff6b00;
   cursor: pointer;
 }
@@ -33,6 +33,17 @@ p {
   margin-top: 20px;
 }
 
+/* video {
+  padding: 20px;
+} */
+
+canvas,
+video,
+img {
+  padding: 20px;
+}
+
+/* 
 input {
   height: 70px;
   width: 500px;
@@ -47,9 +58,4 @@ form > button {
   height: 60px;
   width: 120px;
   font-size: 16px;
-}
-
-form > button:hover {
-  background-color: #ff6b00;
-  cursor: pointer;
-}
+} */

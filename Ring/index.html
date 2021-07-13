@@ -2,17 +2,20 @@
 <html>
   <head>
     <title>Ring</title>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <h1 id="headline"></h1>
     <div id="content" style="display: none">
       <p id="msg"></p>
       <button id="btn">weiter</button>
+      <br />
       <div id="getObject"></div>
       <div id="scanObject">
-        <button id="captureVideoBtn">aufnehmen</button>
         <video id="videoPlayer" autoplay></video>
         <canvas id="canvas" width="320" height="240"></canvas>
+        <br />
+        <button id="captureVideoBtn">aufnehmen</button>
       </div>
       <div id="showObject">
         <img id="displayObject" src="" />
