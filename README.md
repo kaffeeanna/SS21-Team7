@@ -14,6 +14,9 @@ Betriebsanleitung
 6. öffne den Browser in Terminal1(Server) und gehe auf http://localhost:3001 (Case)
 7. öffne den Browser in Terminal2(Client) und gehe auf http://localhost:3002 (Ring)
 
+Ich habe Tutorials/Libraries, die mir geholfen haben, verlinkt. Wenn ich eine Stelle 1:1 kopiert habe, wurde dies im Code kenntlich gemacht.
+Alle NPM Packages sind in den package-lock.txt Dateien notiert.
+
 Bugs:
 man kann ein Training ohne Namen erstellen, indem man direkt auf den Button klickt. Das bringt allerdings nichts, weil man nicht auf die "Leere" Route zugreifen kann.
 
