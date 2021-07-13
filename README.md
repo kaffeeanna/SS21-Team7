@@ -18,3 +18,5 @@ Bugs:
 man kann ein Training ohne Namen erstellen, indem man direkt auf den Button klickt. Das bringt allerdings nichts, weil man nicht auf die "Leere" Route zugreifen kann.
 
 wenn man ein vorinstalliertes training macht und mehr objekte scannt, als vorgesehen sind, friert der Ring ein.
+
+wenn man zu schnell auf weiter drückt, kann die audio/bilddatei fehlerhaft sein und dann funktioniert das training nicht mehr richtig. dann einfach resetten und weiter gehts
