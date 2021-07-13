@@ -84,7 +84,7 @@ btn.addEventListener("click", async () => {
   //different states of the button / of the content
   //checks if its a new OR an old training
   if (training.objectList.length > 0) {
-    console.log(training.objectList[0].audioData);
+    // console.log(training.objectList[0].audioData);
     if (
       (training.objectList[0].informationToRemember !== null &&
         training.objectList[0].audioData === null) ||
@@ -92,22 +92,22 @@ btn.addEventListener("click", async () => {
         training.objectList[0].audioData === undefined)
     ) {
       newTraining();
-      console.log("3");
+      // console.log("3");
     } else {
       //old training
       oldTraining();
-      console.log("2");
+      // console.log("2");
     }
   } else {
     //new Training
     newTraining();
-    console.log("1");
+    // console.log("1");
   }
 });
 
-//WORKS
+//IF the training is a new (unknown) training
 async function newTraining() {
-  msg.innerHTML = "new Training";
+  msg.innerHTML = "Neues Training erkannt.";
   switch (buttonStatus) {
     case "newObj":
       let image = document.getElementById("displayObject");
@@ -119,6 +119,7 @@ async function newTraining() {
       image.src = img;
       canvas.style.display = "inherit";
       scanObjContainer.style.display = "none";
+      msg.innerHTML = "Objekt wurde erfasst.";
       buttonStatus = "showObj";
       button.innerHTML = "weiter";
       showObjectContainer.style.display = "inherit";
@@ -126,6 +127,7 @@ async function newTraining() {
     case "showObj":
       showObjectContainer.style.display = "none";
       getRandomWordContainer.style.display = "inherit";
+      msg.innerHTML = "Das Zufallswort:";
       randomWord.style.display = "none";
       let randomWordContent = await getRandomWord();
       newObject.randomWord = randomWordContent;
@@ -142,22 +144,19 @@ async function newTraining() {
       }
       newObject.id = id;
       id = id + 1;
-      d = await getInformationToRemember(training, id - 1);
-      if (d === true) {
-        buttonStatus = "showInfo";
-      } else {
-        buttonStatus = "start";
-      }
+      // d = await getInformationToRemember(training, id - 1);
+      // if (d === true) {
+      //   buttonStatus = "showInfo";
+      //   console.log("yes");
+      // } else {
+      //   buttonStatus = "start";
+      //   console.log("no");
+      // }
       newObject.alreadyKnown = false;
       button.innerHTML = "weiter";
       break;
     case "showInfo":
-      // if (
-      //   training.objectList[id - 1].informationToRemember === undefined ||
-      //   training.objectList[id - 1].informationToRemember === null
-      // ) {
-      // }
-      // else
+      msg.innerHTML = "Merke dir dieses Wort.";
       getRandomWordContainer.style.display = "none";
       showInfoContainer.style.display = "inherit";
       newObject.informationToRemember =
@@ -167,6 +166,7 @@ async function newTraining() {
       buttonStatus = "captureAudio";
       break;
     case "captureAudio":
+      msg.innerHTML = "Du nimmst auf.";
       showInfoContainer.style.display = "none";
       getRandomWordContainer.style.display = "none";
       getMessageContainer.style.display = "inherit";
@@ -180,21 +180,24 @@ async function newTraining() {
       buttonStatus = "showAudio";
       break;
     case "showAudio":
+      msg.innerHTML = "Deine Audiodaten:";
       getMessageContainer.style.display = "none";
       showMessageContainer.style.display = "inherit";
       buttonStatus = "last";
       break;
     case "last":
+      msg.innerHTML = "Objekt gespeichert.";
       showMessageContainer.style.display = "none";
       newObject.alreadyKnown = true;
       let json = JSON.stringify(newObject);
       // console.log("sended: " + json);
-      console.log(newObject);
+      // console.log(newObject);
       buttonStatus = "start";
       button.innerHTML = "zum Anfang";
       sendBack(json);
       break;
     case "start":
+      msg.innerHTML = "";
       scanObjContainer.style.display = "none";
       showObjectContainer.style.display = "none";
       getRandomWordContainer.style.display = "none";
@@ -203,19 +206,22 @@ async function newTraining() {
       getObjContainer.style.display = "inherit";
       buttonStatus = "newObj";
       button.innerHTML = "neues Objekt scannen";
+      // stopRecordingBtn.style.display = "inherit";
+      stopRecordingBtn.style.opacity = 100 + "%";
+      stopRecordingBtn.style.cursor = "pointer";
+
       // training.objectList.push(newObject);
       // console.log(training.objectList);
       break;
   }
 }
 
-//WORKS
+//IF the training is an old (known) training
 async function oldTraining() {
-  msg.innerHTML = "old Training";
+  msg.innerHTML = "Altes Training erkannt.";
   switch (buttonStatus) {
     case "newObj":
       let image = document.getElementById("displayObject");
-      // btn.innerHTML = "neues Objekt";
       getObjContainer.style.display = "none";
       scanObjContainer.style.display = "inherit";
       canvas.style.display = "none";
@@ -223,31 +229,36 @@ async function oldTraining() {
       image.src = img;
       canvas.style.display = "inherit";
       scanObjContainer.style.display = "none";
+      msg.innerHTML = "Objekt wurde erfasst.";
       let fakeAi = await getFakeAIAnswerIfObjectIsKnown(training);
       if (fakeAi.status) {
         buttonStatus = "showAudio";
-        msg.innerHTML = "das Objekt wurde erkannt";
-        console.log(fakeAi.val.audioData);
+        msg.innerHTML = "Das Objekt wurde erkannt.";
+        // console.log(fakeAi.val.audioData);
         // let d = window.URL.createObjectURL(fakeAi.val.audioData);
         // console.log(d);
         showObjectContainer.style.display = "inherit";
         audioOutput.src = fakeAi.val.audioData;
       } else {
-        msg.innerHTML = "das Objekt wurde nicht erkannt";
+        msg.innerHTML = "Das Objekt wurde nicht erkannt.";
       }
 
       button.innerHTML = "weiter";
       break;
     case "showAudio":
+      msg.innerHTML = "Deine Audiodaten:";
       showObjectContainer.style.display = "none";
       showMessageContainer.style.display = "inherit";
       buttonStatus = "start";
       break;
     case "start":
+      msg.innerHTML = "";
       showMessageContainer.style.display = "none";
       getObjContainer.style.display = "inherit";
       buttonStatus = "newObj";
       button.innerHTML = "neues Objekt scannen";
+      stopRecordingBtn.style.opacity = 100 + "%";
+      stopRecordingBtn.style.cursor = "pointer";
       // training.objectList.push(newObject);
       // console.log(training.objectList);
       break;
@@ -294,11 +305,16 @@ async function getAudioData() {
         let chunks = [];
 
         mediaRecorder.start();
-        console.log(mediaRecorder.state);
+        // console.log(mediaRecorder.state);
 
         stopRecordingBtn.addEventListener("click", () => {
           mediaRecorder.stop();
-          console.log(mediaRecorder.state);
+          // stopRecordingBtn.style.display = "none";
+          stopRecordingBtn.style.opacity = 0 + "%";
+          stopRecordingBtn.style.cursor = "context-menu";
+          msg.innerHTML = "Audiodaten wurden erfasst.";
+
+          // console.log(mediaRecorder.state);
         });
 
         mediaRecorder.ondataavailable = function (ev) {
@@ -363,24 +379,19 @@ async function getInformationToRemember(training, state) {
     // console.log(training.objectList);
     // console.log(state);
     if (training.objectList[state]) {
-      console.log(training.objectList[state].informationToRemember);
+      // console.log(training.objectList[state].informationToRemember);
 
       if (training.objectList[state].informationToRemember !== null) {
-        console.log(true);
+        // console.log(true);
         resolve(true);
       } else {
-        console.log(false);
+        // console.log(false);
         resolve(false);
       }
     } else {
-      // if (trainin)
       // console.log(false);
-      // return false;
-      console.log(false);
       resolve(false);
     }
-    // }
-    // }
   }).catch((e) => {
     console.log("there was an error: " + e);
   });
