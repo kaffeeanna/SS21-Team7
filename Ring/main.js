@@ -12,6 +12,7 @@ let training;
 //IP vom Server!!! windows ipconfig
 //lab: 10.110.0.103
 //max: 192.168.178.20
+//diandra: 192.168.2.102
 const ip = "192.168.178.20";
 
 const client = new WebSocketClient();
