@@ -13,6 +13,7 @@ let training;
 //lab: 10.110.0.103
 //max: 192.168.178.20
 //diandra: 192.168.2.102
+// nina: 192.168.178.55.
 const ip = "192.168.178.20";
 
 const client = new WebSocketClient();
