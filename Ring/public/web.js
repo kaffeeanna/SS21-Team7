@@ -22,10 +22,14 @@ const stopRecordingBtn = document.getElementById("stopRecording");
 const button = document.getElementById("btn");
 const content = document.getElementById("content");
 
+//jetzt befinden wir uns direkt im Browser
+
 //EMPTY OBJECT
 let buttonStatus = "newObj";
 let training;
 let id = 0;
+
+//es gibt ein leeres Objekt, dass es zu befüllen gilt.
 let newObject = {
   id: null,
   alreadyKnown: null,
@@ -107,11 +111,11 @@ btn.addEventListener("click", async () => {
 
 //IF the training is a new (unknown) training
 async function newTraining() {
+  //switch und case kennst du ja jetzt schon aus main.js
   msg.innerHTML = "Neues Training erkannt.";
   switch (buttonStatus) {
     case "newObj":
       let image = document.getElementById("displayObject");
-      // btn.innerHTML = "neues Objekt";
       getObjContainer.style.display = "none";
       scanObjContainer.style.display = "inherit";
       canvas.style.display = "none";
@@ -136,22 +140,12 @@ async function newTraining() {
       let d = await getInformationToRemember(training, id);
       if (d === true) {
         buttonStatus = "showInfo";
-        // buttonStatus = "captureAudio";
-        // console.log()
       } else {
         buttonStatus = "captureAudio";
-        // buttonStatus = "showInfo";
       }
       newObject.id = id;
       id = id + 1;
-      // d = await getInformationToRemember(training, id - 1);
-      // if (d === true) {
-      //   buttonStatus = "showInfo";
-      //   console.log("yes");
-      // } else {
-      //   buttonStatus = "start";
-      //   console.log("no");
-      // }
+
       newObject.alreadyKnown = false;
       button.innerHTML = "weiter";
       break;
@@ -170,7 +164,6 @@ async function newTraining() {
       showInfoContainer.style.display = "none";
       getRandomWordContainer.style.display = "none";
       getMessageContainer.style.display = "inherit";
-      // let fd = new FormData();
       let audioData = await getAudioData();
       let audioURL = window.URL.createObjectURL(audioData);
       let blob64 = await blobToB64(audioData);
@@ -206,12 +199,8 @@ async function newTraining() {
       getObjContainer.style.display = "inherit";
       buttonStatus = "newObj";
       button.innerHTML = "neues Objekt scannen";
-      // stopRecordingBtn.style.display = "inherit";
       stopRecordingBtn.style.opacity = 100 + "%";
       stopRecordingBtn.style.cursor = "pointer";
-
-      // training.objectList.push(newObject);
-      // console.log(training.objectList);
       break;
   }
 }
@@ -235,8 +224,6 @@ async function oldTraining() {
         buttonStatus = "showAudio";
         msg.innerHTML = "Das Objekt wurde erkannt.";
         // console.log(fakeAi.val.audioData);
-        // let d = window.URL.createObjectURL(fakeAi.val.audioData);
-        // console.log(d);
         showObjectContainer.style.display = "inherit";
         audioOutput.src = fakeAi.val.audioData;
       } else {
@@ -259,8 +246,6 @@ async function oldTraining() {
       button.innerHTML = "neues Objekt scannen";
       stopRecordingBtn.style.opacity = 100 + "%";
       stopRecordingBtn.style.cursor = "pointer";
-      // training.objectList.push(newObject);
-      // console.log(training.objectList);
       break;
   }
 }
