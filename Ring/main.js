@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-//meine selbstgeschriebenen Funktionen, die ich in eine andere Datei gepackt habe // In welche Datei?
+//meine selbstgeschriebenen Funktionen, die ich in eine andere Datei gepackt habe // In welche Datei? --- steht in Zeile 3 ./src/js/training
 const { saveTraining, getTraining } = require("./src/js/training");
 //Node modules
 const WebSocketClient = require("websocket").client;

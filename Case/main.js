@@ -34,16 +34,18 @@ let clientConnected = false;
  */
 
 //https://www.npmjs.com/package/websocket
-const server = http.createServer(function (request, response) {  //Server wird erstellt?
+const server = http.createServer(function (request, response) {
+  //Server wird erstellt? --- yes
   console.log(new Date() + " Received request for " + request.url);
   response.writeHead(404);
   response.end();
 });
 server.listen(8080, function () {
-  console.log(new Date() + " Server is listening on port 8080"); // Server läuft auf Port 8080? Wieso?
+  console.log(new Date() + " Server is listening on port 8080"); // Server läuft auf Port 8080? Wieso? --- 8080 ist einer der Standards für HTTP-/Webserver
 });
 
-const wsServer = new WebSocketServer({ // Was ist dieser WsServer?
+const wsServer = new WebSocketServer({
+  // Was ist dieser WsServer? --- WS steht für WebSocket, ist also unser Server
   httpServer: server,
   // You should not use autoAcceptConnections for production
   // applications, as it defeats all standard cross-origin protection
@@ -55,7 +57,8 @@ const wsServer = new WebSocketServer({ // Was ist dieser WsServer?
 
 //build a connection to client
 wsServer.on("request", function (request) {
-  if (!originIsAllowed(request.origin)) { // nur bestimmte Anfragen erlauben (wenn angegeben)
+  if (!originIsAllowed(request.origin)) {
+    // nur bestimmte Anfragen erlauben (wenn angegeben)
     // Make sure we only accept requests from an allowed origin
     request.reject();
     console.log(
@@ -70,7 +73,8 @@ wsServer.on("request", function (request) {
   // console.log(clientConnected);
 
   //sends Data
-  myEmitter.on("sendData", (data) => { // Werden hier die Daten von case zu ring gesendet
+  myEmitter.on("sendData", (data) => {
+    // Werden hier die Daten von case zu ring gesendet --- Hier geht es darum, dass die Daten als JSON string verschickt werden, also das Format und nicht die Daten selbst
     sendObj = JSON.stringify(data);
     // console.log(sendObj);
     connection.sendUTF(sendObj);
