@@ -34,16 +34,16 @@ let clientConnected = false;
  */
 
 //https://www.npmjs.com/package/websocket
-const server = http.createServer(function (request, response) {
+const server = http.createServer(function (request, response) {  //Server wird erstellt?
   console.log(new Date() + " Received request for " + request.url);
   response.writeHead(404);
   response.end();
 });
 server.listen(8080, function () {
-  console.log(new Date() + " Server is listening on port 8080");
+  console.log(new Date() + " Server is listening on port 8080"); // Server läuft auf Port 8080? Wieso?
 });
 
-const wsServer = new WebSocketServer({
+const wsServer = new WebSocketServer({ // Was ist dieser WsServer?
   httpServer: server,
   // You should not use autoAcceptConnections for production
   // applications, as it defeats all standard cross-origin protection
@@ -55,7 +55,7 @@ const wsServer = new WebSocketServer({
 
 //build a connection to client
 wsServer.on("request", function (request) {
-  if (!originIsAllowed(request.origin)) {
+  if (!originIsAllowed(request.origin)) { // nur bestimmte Anfragen erlauben (wenn angegeben)
     // Make sure we only accept requests from an allowed origin
     request.reject();
     console.log(
@@ -64,13 +64,13 @@ wsServer.on("request", function (request) {
     return;
   }
 
-  let connection = request.accept("echo-protocol", request.origin);
+  let connection = request.accept("echo-protocol", request.origin); // Was ist ein echo-Protocol?
   console.log(new Date() + " Connection accepted.");
   clientConnected = true;
   // console.log(clientConnected);
 
   //sends Data
-  myEmitter.on("sendData", (data) => {
+  myEmitter.on("sendData", (data) => { // Werden hier die Daten von case zu ring gesendet
     sendObj = JSON.stringify(data);
     // console.log(sendObj);
     connection.sendUTF(sendObj);

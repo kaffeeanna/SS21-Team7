@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-//meine selbstgeschriebenen Funktionen, die ich in eine andere Datei gepackt habe
+//meine selbstgeschriebenen Funktionen, die ich in eine andere Datei gepackt habe // In welche Datei?
 const { saveTraining, getTraining } = require("./src/js/training");
 //Node modules
 const WebSocketClient = require("websocket").client;
@@ -41,7 +41,7 @@ client.on("connect", function (connection) {
     console.log("Connection Error: " + error.toString());
   });
   connection.on("close", function () {
-    console.log("echo-protocol Connection Closed");
+    console.log("echo-protocol Connection Closed"); // Was ist dieses echo-Protocol?
   });
   //wenn eine Nachricht reinkommt..
   connection.on("message", function (message) {
